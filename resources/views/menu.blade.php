@@ -12,7 +12,7 @@
         <div class="md:flex ">
         <div class="flex ml-8 p-1 text-gray-900  ">
             <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('data.predata_index') }}'" >事前品番Data</button>
-            <button type="button" class="ml-2 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品</button>
+            <button type="button" class="ml-2 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >登録済品番リスト</button>
         </div>
 
          <div class="ml-8 md:ml-0 md:flex p-1 text-gray-900  ">

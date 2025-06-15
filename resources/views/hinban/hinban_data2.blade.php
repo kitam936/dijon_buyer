@@ -2,20 +2,25 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <div class="">
+
             <div>
-            登録済品番データ
-            </div>
-            <div class="flex">
-            <div class="w-40 ml-4 mt-4 text-sm items-right mb-0">
-                <button onclick="location.href='{{ route('menu') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">Menu</button>
-            </div>
-            <div class="w-40 md:ml-8 ml-2 mt-4 text-sm items-right mb-0">
-                <button onclick="location.href='{{ route('hinban_create') }}'" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">新規登録</button>
-            </div>
-            </div>
+            登録済品番リスト
             </div>
         </h2>
+        <div class="md:flex">
+            <div class="flex">
+            <div class="w-40 ml-4 mt-4 text-sm items-right mb-0">
+                <button onclick="location.href='{{ route('menu') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded">Menu</button>
+            </div>
+            <div class="w-40 ml-4 mt-4 text-sm items-right mb-0">
+                <button onclick="location.href='{{ route('hinban_image_index') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded">画像リスト</button>
+            </div>
+            </div>
+            <div class="w-40 md:ml-4 ml-4 mt-4 text-sm items-right mb-0">
+                <button onclick="location.href='{{ route('hinban_create') }}'" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">新規登録</button>
+            </div>
+        </div>
+
 
         <x-flash-message status="session('status')"/>
 
@@ -61,6 +66,14 @@
                 <div>
                     <button type="button" class="w-20 h-8 bg-blue-300 text-white ml-2 hover:bg-indigo-600 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" class="mb-2 ml-2 text-right text-black bg-indigo-300 border-0 py-0 px-2 focus:outline-none hover:bg-indigo-300 rounded ">全表示</button>
                 </div>
+                </div>
+                <div class="md:ml-4">
+                    <label for="order" class="mr-1 leading-7 text-sm  text-gray-800 ">並順：</label>
+                    <select id="order" name="order" class="w-24 h-8 rounded text-sm pt-1 border mr-6 mb-2" type="text">
+                        {{-- <option value="" @if(\Request::get('order') == '0' ) selected @endif >選択</option> --}}
+                        <option value="u" @if(\Request::get('order') == "u" || \Request::get('order') == '0') selected @endif >新着順</option>
+                        <option value="h" @if(\Request::get('order') == "h") selected @endif>品番順</option>
+                    </select>
                 </div>
             </div>
         </form>
@@ -136,6 +149,11 @@
 
         const face = document.getElementById('face_code')
         face.addEventListener('change', function(){
+        this.form.submit()
+        })
+
+        const order = document.getElementById('order')
+        order.addEventListener('change', function(){
         this.form.submit()
         })
 
