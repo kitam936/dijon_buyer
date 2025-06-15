@@ -130,54 +130,94 @@ class DataController extends Controller
 
     public function hinban_index2(Request $request)
     {
-        // $products=Hinban::with('unit')
-        // ->join('brands','hinbans.brand_id','=','brands.id')
-        // ->where('year_code','LIKE','%'.$request->year_code.'%')
-        // ->where('brand_id','LIKE','%'.$request->brand_code.'%')
-        // ->where('unit_id','LIKE','%'.$request->unit_code.'%')
-        // ->where('face_code','LIKE','%'.$request->face_code.'%')
-        // ->paginate(100);
-        $products=DB::table('hinbans')
-        ->join('units','hinbans.unit_id','=','units.id')
-        ->join('brands','hinbans.brand_id','=','brands.id')
-        ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
-        ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-        ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-        ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
-        ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name')
-        ->paginate(100);
-        $years=DB::table('hinbans')
-        ->select(['year_code'])
-        ->groupBy(['year_code'])
-        ->orderBy('year_code','desc')
-        ->get();
-        $units=DB::table('hinbans')
-        ->join('units','hinbans.unit_id','=','units.id')
-        ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
-        ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-        // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-        ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
-        ->select(['hinbans.unit_id'])
-        ->groupBy(['hinbans.unit_id'])
-        ->orderBy('hinbans.unit_id','asc')
-        ->get();
-        $faces=DB::table('hinbans')
-        ->join('faces','hinbans.face_code','=','faces.face_code')
-        ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
-        ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-        ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-        // ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
-        ->select(['hinbans.face_code','faces.face_item'])
-        ->groupBy(['hinbans.face_code','faces.face_item'])
-        ->orderBy('hinbans.face_code','asc')
-        ->get();
-        $brands=DB::table('brands')
-        ->select(['id','brand_name'])
-        ->groupBy(['id','brand_name'])
-        ->orderBy('id','asc')
-        ->get();
-        // dd($products);
-        return view('hinban.hinban_data2',compact('products','years','units','brands','faces'));
+        if($request->order == 'h'){
+            $products=DB::table('hinbans')
+            ->join('units','hinbans.unit_id','=','units.id')
+            ->join('brands','hinbans.brand_id','=','brands.id')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('hinbans.year_code','LIKE','%'.$request->hinban_code.'%')
+            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name')
+            ->orderBy('hinbans.id','asc')
+            ->paginate(100);
+            $years=DB::table('hinbans')
+            ->select(['year_code'])
+            ->groupBy(['year_code'])
+            ->orderBy('year_code','desc')
+            ->get();
+            $units=DB::table('hinbans')
+            ->join('units','hinbans.unit_id','=','units.id')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->select(['hinbans.unit_id'])
+            ->groupBy(['hinbans.unit_id'])
+            ->orderBy('hinbans.unit_id','asc')
+            ->get();
+            $faces=DB::table('hinbans')
+            ->join('faces','hinbans.face_code','=','faces.face_code')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            // ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->select(['hinbans.face_code','faces.face_item'])
+            ->groupBy(['hinbans.face_code','faces.face_item'])
+            ->orderBy('hinbans.face_code','asc')
+            ->get();
+            $brands=DB::table('brands')
+            ->select(['id','brand_name'])
+            ->groupBy(['id','brand_name'])
+            ->orderBy('id','asc')
+            ->get();
+            // dd($products);
+            return view('hinban.hinban_data2',compact('products','years','units','brands','faces'));
+        } else {
+            $products=DB::table('hinbans')
+            ->join('units','hinbans.unit_id','=','units.id')
+            ->join('brands','hinbans.brand_id','=','brands.id')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name')
+            ->orderBy('hinbans.created_at','desc')
+            ->paginate(100);
+            $years=DB::table('hinbans')
+            ->select(['year_code'])
+            ->groupBy(['year_code'])
+            ->orderBy('year_code','desc')
+            ->get();
+            $units=DB::table('hinbans')
+            ->join('units','hinbans.unit_id','=','units.id')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->select(['hinbans.unit_id'])
+            ->groupBy(['hinbans.unit_id'])
+            ->orderBy('hinbans.unit_id','asc')
+            ->get();
+            $faces=DB::table('hinbans')
+            ->join('faces','hinbans.face_code','=','faces.face_code')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            // ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->select(['hinbans.face_code','faces.face_item'])
+            ->groupBy(['hinbans.face_code','faces.face_item'])
+            ->orderBy('hinbans.face_code','asc')
+            ->get();
+            $brands=DB::table('brands')
+            ->select(['id','brand_name'])
+            ->groupBy(['id','brand_name'])
+            ->orderBy('id','asc')
+            ->get();
+            // dd($products);
+            return view('hinban.hinban_data2',compact('products','years','units','brands','faces'));
+        }
     }
 
     public function predata_index(Request $request)

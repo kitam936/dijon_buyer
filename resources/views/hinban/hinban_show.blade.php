@@ -8,15 +8,18 @@
         </h2>
 
         <div><input type="hidden" name="hin_id" value="{{ $product->hinban_id }}" ></div>
+        <x-flash-message status="session('status')"/>
 
         <div class="flex ml-8 ">
         <div class="ml-2 mb-2 md:mb-0">
             <button type="button" onclick="location.href='{{ route('hinban.hinban_index2') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">登録済品番データ</button>
         </div>
-        {{-- <div class="ml-4 mb-0">
-            <button type="button" class="w-32 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('sales_product') }}'" >商品別売上</button>
-        </div> --}}
+        <div class="ml-4 mb-0">
+            <button type="button" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded " onclick="location.href='{{ route('hinban_edit',['id'=>$product->hinban_id]) }}'" >編集</button>
         </div>
+        </div>
+
+
 
 
     </x-slot>
@@ -75,7 +78,50 @@
                             </div>
 
                         </div>
-                    </form>
+
+                        <div class="px-2 mt-4 mx-auto">
+                            <div class="relative md:flex">
+
+                                @if($sku1->sku_image)
+                                <div class="w-80 ml-2">
+                                    <x-sku_image-thumbnail :filename="$sku1->sku_image" />
+                                    <span class="text-sm">Col:{{$sku1->col_id}}　/　Size{{$sku1->size_id}}</span>
+                                </div>
+                                @endif
+                                @if($sku2->sku_image)
+                                <div class="w-80 ml-2">
+                                    <x-sku_image-thumbnail :filename="$sku2->sku_image" />
+                                    <span class="text-sm">Col:{{$sku2->col_id}}　/　Size{{$sku2->size_id}}</span>
+                                </div>
+                                @endif
+
+                                @if($sku3->sku_image)
+                                <div class="w-80 ml-2">
+                                    <x-sku_image-thumbnail :filename="$sku3->sku_image" />
+                                    <span class="text-sm">Col:{{$sku3->col_id}}　/　Size{{$sku3->size_id}}</span>
+                                </div>
+                                @endif
+                                @if($sku4->sku_image)
+                                <div class="w-80 ml-2">
+                                    <x-sku_image-thumbnail :filename="$sku4->sku_image" />
+                                    <span class="text-sm">Col:{{$sku4->col_id}}　/　Size{{$sku4->size_id}}</span>
+                                </div>
+                                @endif
+                                @if($sku5->sku_image)
+                                <div class="w-80 ml-2">
+                                    <x-sku_image-thumbnail :filename="$sku5->sku_image" />
+                                    <span class="text-sm">Col:{{$sku5->col_id}}　/　Size{{$sku5->size_id}}</span>
+                                </div>
+                                @endif
+                                @if($sku6->sku_image)
+                                <div class="w-80 ml-2">
+                                    <x-sku_image-thumbnail :filename="$sku6->sku_image" />
+                                    <span class="text-sm">Col:{{$sku6->col_id}}　/　Size{{$sku6->size_id}}</span>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+
                 </div>
             </div>
         </div>
@@ -96,7 +142,7 @@
                         <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">現地ｺｽﾄ</th>
                         {{-- <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">円建ｺｽﾄ</th> --}}
                         <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">想定円ｺｽﾄ</th>
-
+                        <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
                     </tr>
                 </thead>
 
@@ -114,8 +160,16 @@
                     <td class="w-2/12 md:2/12 text-xs md:px-4  text-center">{{ $sku->size_id }}</td>
                     <td class="w-2/12 md:2/12 text-sm md:px-4  text-center">{{ $sku->local_cur_price }}</td>
                     {{-- <td class="w-2/12 md:2/12 text-sm md:px-4  text-center">{{ $sku->local_cur_price * $ex_rate->ex_rate /100}}</td> --}}
-                    <td class="w-2/12 md:2/12 text-sm md:px-4  text-center">{{ $sku->local_cur_price * $ex_rate->ex_rate /100 * $cost_rate->cost_rate/100}}</td>
-
+                    <td class="w-2/12 md:2/12 text-sm md:px-4  text-center">{{ ($sku->local_cur_price * $ex_rate->ex_rate / 100 * $cost_rate->cost_rate / 100) ?: '' }}</td>
+                    @if(Auth::user()->role_id <= 3 && $sku->sku_code)
+                        <td class="w-1/15 md:px-4 py-1 text-center">
+                            <form action="{{ route('sku_clear', ['id'=>$sku->id]) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-16 text-sm border rounded bg-red-500 text-white hover:bg-red-600">削除</button>
+                            </form>
+                        </td>
+                    @endif
                     </tr>
                     @endforeach
                 </tbody>

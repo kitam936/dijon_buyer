@@ -104,9 +104,13 @@ Route::middleware('auth')->group(function () {
     Route::POST('hinban_store', [HinbanController::class, 'store'])->name('hinban_store');
     Route::get('hinban_show/{id}', [HinbanController::class, 'show'])->name('hinban_show');
     Route::get('hinban_edit/{id}', [HinbanController::class, 'edit'])->name('hinban_edit');
-    Route::get('hinban_update/{id}', [HinbanController::class, 'update'])->name('hinban_update');
+    Route::post('hinban_update/{id}', [HinbanController::class, 'update'])->name('hinban_update');
     Route::delete('hinban_destroy/{id}', [HinbanController::class, 'destroy'])->name('hinban_destroy');
     Route::delete('hinban_destroy_one/{id}', [HinbanController::class, 'destroy_one'])->name('hinban_destroy_one');
+    Route::delete('sku_clear/{id}', [HinbanController::class, 'sku_clear'])->name('sku_clear');
+    Route::get('hinban_image_index', [HinbanController::class, 'hinban_image_index'])->name('hinban_image_index');
+    Route::get('hinban_image_show/{id}', [HinbanController::class, 'hinban_image_show'])->name('hinban_image_show');
+
     Route::get('role_list', [UserController::class, 'role_list'])->name('role_list');
     Route::get('role_edit/{user}', [UserController::class, 'role_edit'])->name('role_edit');
     Route::get('role_update/{user}', [UserController::class, 'role_update'])->name('role_update');

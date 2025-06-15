@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            発注
+            発注フォーム
             {{-- <button type="button" onclick="location.href='{{ route('company.index') }}'" class="mb-2 ml-2 text-right text-black bg-indigo-300 border-0 py-0 px-2 focus:outline-none hover:bg-indigo-300 rounded ">戻る</button> --}}
         </h2>
         <x-flash-message status="session('status')"/>
@@ -9,7 +9,7 @@
         <div class="md:flex">
             <div class="flex">
             <div class="pl-2 mt-2 ml-4 ">
-                <button type="button" class="w-32 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('menu') }}'" >Menu</button>
+                <button type="button" class="w-32 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('analysis_index') }}'" >Menu</button>
             </div>
             <div class="ml-4 mt-2 md:ml-4 md:mt-2">
                 <button type="button" class="w-32 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('order_index') }}'" >発注リスト</button>
@@ -22,7 +22,7 @@
         </div>
         <form method="get" action="{{ route('cart_create')}}" class="mt-4">
 
-            <div class="lg:flex">
+            <div class="md:flex">
                 <div class="md:flex">
                     <label for="year_code" class="items-center text-sm mt-2 text-gray-800 leading-tight" >年度CD：</label>
                     <select class="w-24 h-8 rounded text-sm pt-1 mr-2 mb-2" id="year_code" name="year_code" type="number" class="border">
@@ -56,24 +56,25 @@
                     </select>
                 </div>
                 <div class="flex">
-                <div>
-                    <label for="face" class="mr-4 md:mr-0 items-center text-sm mt-2  text-gray-800 leading-tight" >Face：</label>
-                    <select class="w-24 h-8 rounded text-sm pt-1 mr-4 mb-2 border " id="face" name="face" type="text" >
-                    <option value="" @if(\Request::get('face') == '0') selected @endif >指定なし</option>
-                    @foreach ($faces as $face)
-                        <option value="{{ $face->face }}" @if(\Request::get('face') == $face->face ) selected @endif >{{ $face->face  }}</option>
-                    @endforeach
-                    </select>
-                </div>
-                @if($logIn_user->role_id <10)
-                <div>
-                    <label for="type1" class="mr-1 leading-7 text-sm  text-gray-800 ">表示：</label>
-                    <select id="type1" name="type1" class="w-28 h-8 rounded text-sm pt-1 border mr-6 mb-2" type="text">
-                        <option value="a" @if(\Request::get('type1') == '0' || \Request::get('type1') == "a") selected @endif >全品番</option>
-                        <option value="s" @if(\Request::get('type1') == "s") selected @endif>売上品番</option>
-                    </select>
-                </div>
-                @endif
+                   <div class="flex">
+                        <label for="face" class="mr-5 md:mr-0 items-center text-sm mt-2  text-gray-800 leading-tight" >Face：</label>
+                        <select class="w-24 h-8 rounded text-sm pt-1 mr-5 mb-2 border " id="face" name="face" type="text" >
+                        <option value="" @if(\Request::get('face') == '0') selected @endif >指定なし</option>
+                        @foreach ($faces as $face)
+                            <option value="{{ $face->face }}" @if(\Request::get('face') == $face->face ) selected @endif >{{ $face->face  }}</option>
+                        @endforeach
+                        </select>
+                     </div>
+
+                    @if($logIn_user->role_id <10)
+                    <div class="flex">
+                        <label for="type1" class="mr-3  md:mr-2 mt-2 text-sm items-center text-gray-800 leading-tight">表示:</label>
+                        <select id="type1" name="type1" class="w-24 h-8 rounded text-sm pt-1 border mr-6 mb-2" type="text">
+                            <option value="a" @if(\Request::get('type1') == '0' || \Request::get('type1') == "a") selected @endif >全品番</option>
+                            <option value="s" @if(\Request::get('type1') == "s") selected @endif>売上履歴</option>
+                        </select>
+                    </div>
+                    @endif
                 </div>
                 </div>
                 <div class="flex">
@@ -103,7 +104,7 @@
                         <th class="w-5/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">商品名</th>
                         <th class="w-2/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">売価</th>
                         <th class="w-2/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">売数</th>
-                        {{-- <th class="w-1/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">在庫</th> --}}
+                        {{-- <th class="w-1/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">画像</th> --}}
                         {{-- <th class="w-4/16 md:pr-4 pr-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">数量</th> --}}
                         {{-- <th class="w-1/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th> --}}
                     </tr>
@@ -111,23 +112,36 @@
                 <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <td class="w-3/15 md:px-4 py-1">{{ $product->hinban_id }}-{{ $product->col_id }}-{{ $product->size_id }}</td>
+                            <td class="w-3/15 pl-1 md:px-4 py-1">{{ $product->hinban_id }}-{{ $product->col_id }}-{{ $product->size_id }}</td>
                             {{-- <td class="w-1/15 md:px-4 py-1">{{ $cart->col_id }}</td> --}}
                             {{-- <td class="w-1/15 md:px-4 py-1">{{ $cart->size_id }}</td> --}}
                             <td class="w-5/15 md:px-4 py-1">{{ Str::limit($product->hinban_name,16) }}</td>
+
                             <td class="w-2/15 md:px-4 py-1">{{ $product->m_price }}</td>
                             <td class="w-2/15 md:px-4 py-1">{{ $product->sales_pcs }}</td>
-                            {{-- <td class="w-2/15 md:px-4 py-1">{{ $product->stocks }}</td> --}}
                             <td class="w-4/15 md:px-4 py-1">
                                 <form method="POST" action="{{ route('cart_add') }}">
                                 @csrf
-                                <div class="flex">
+                            <div class="flex">
                                 <input type="hidden" name="sku_id" value="{{ $product->id }}">
 
                                 <div class="w-full ">
                                 <x-sku2_image-thumbnail :filename="$product->filename"  />
                                 </div>
-
+{{--
+                                <div class="mt-1">
+                                <div class="mt-1 md:mt-16">
+                                <select name="pcs" class="rounded h-12">
+                                    <option value="{{ $product->pcs }}">{{ $product->pcs ?? 0}}</option>
+                                    @for ($i = 1; $i <= 9; $i++)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                                </div>
+                                <div class="mt-0 md:mt-16 h-12">
+                                <button type="submit" class="bg-indigo-500 text-white rounded text-sm ml-0 mt-1 h-9 w-16">追加</button>
+                                </div>
+                                </div> --}}
                                 @if($product->stocks > $order_stop->order_stop_pcs)
                                 <div class="mt-1">
                                 <div class="mt-1 md:mt-16">
@@ -143,7 +157,7 @@
                                 </div>
                                 </div>
                                 @else
-                                <td class="w-2/15 md:px-4 text-red-600 py-1">在庫なし</td>
+                               <div class=" text-sm md:px-2 mt-8 text-red-600 py-1">発注不可</div>
                                 @endif
                             </div>
                             </form>
@@ -166,7 +180,7 @@
 
     @else
 
-    <div class="py-6 border">
+    <div class="py-4 border">
         <div class=" mx-auto sm:px-4 lg:px-4 border">
         <table>
             <thead>
@@ -177,7 +191,7 @@
                     <th class="w-5/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">商品名</th>
                     <th class="w-2/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">売価</th>
                     <th class="w-2/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">売数</th>
-                    {{-- <th class="w-1/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">在庫</th> --}}
+                    {{-- <th class="w-1/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">画像</th> --}}
                     {{-- <th class="w-4/16 md:pr-4 pr-0 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">数量</th> --}}
                     {{-- <th class="w-1/16 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th> --}}
                 </tr>
@@ -185,14 +199,13 @@
             <tbody>
                 @foreach ($products as $product)
                     <tr>
-                        <td class="w-3/15 md:px-4 py-1">{{ $product->hinban_id }}-{{ $product->col_id }}-{{ $product->size_id }}</td>
+                        <td class="w-2/16 pl-1 md:px-4 py-1">{{ $product->hinban_id }}-{{ $product->col_id }}-{{ $product->size_id }}</td>
                         {{-- <td class="w-1/15 md:px-4 py-1">{{ $product->col_id }}</td> --}}
                         {{-- <td class="w-1/15 md:px-4 py-1">{{ $product->size_id }}</td> --}}
-                        <td class="w-5/15 md:px-4 py-1">{{ Str::limit($product->hinban_name,24) }}</td>
-                        <td class="w-2/15 md:px-4 py-1">{{ $product->m_price }}</td>
-                        <td class="w-2/15 md:px-4 py-1">{{ $product->sales_pcs }}</td>
-                        {{-- <td class="w-2/15 md:px-4 py-1">{{ $product->stocks }}</td> --}}
-                        <td class="w-4/15 md:px-4 py-0">
+                        <td class="w-5/16 md:px-4 py-1">{{ Str::limit($product->hinban_name,24) }}</td>
+                        <td class="w-2/16 md:px-4 py-1">{{ $product->m_price }}</td>
+                        <td class="w-2/16 md:px-4 py-1 text-center text-green-600 font-bold-700">{{ $product->sales_pcs }}</td>
+                        <td class="w-4/16 md:px-4 py-0">
                             <form method="POST" action="{{ route('cart_add') }}">
                                 @csrf
                             <div class="flex">
@@ -211,6 +224,20 @@
                                 <x-sku2_image-thumbnail :filename="$product->filename"  />
                                 @endif
 
+                                {{-- <div class="mt-1">
+                                <div class="mt-1 md:mt-16">
+                                <select name="pcs" class="rounded h-12">
+                                    <option value="{{ $product->pcs }}">{{ $product->pcs ?? 0}}</option>
+                                    @for ($i = 1; $i <= 9; $i++)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                                </div>
+                                <div class="mt-0 md:mt-16 h-12">
+                                <button type="submit" class="bg-indigo-500 text-white rounded text-sm ml-0 mt-1 h-9 w-16">追加</button>
+                                </div>
+                                </div> --}}
+
                                 @if($product->stocks > $order_stop->order_stop_pcs)
                                 <div class="mt-1">
                                 <div class="mt-1 md:mt-16">
@@ -226,12 +253,12 @@
                                 </div>
                                 </div>
                                 @else
-                                <td class="w-2/15 md:px-4 text-red-600 py-1">在庫なし</td>
+                                <div class=" text-sm md:px-2 mt-8 text-red-600 py-1">発注不可</div>
                                 @endif
                             </div>
                             </form>
-                        </td>
 
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
