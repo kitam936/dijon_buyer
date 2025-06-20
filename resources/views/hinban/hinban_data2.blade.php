@@ -121,7 +121,7 @@
                             <form action="{{ route('hinban_destroy_one', ['id'=>$product->hinban_id]) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-16 border rounded bg-red-500 text-white hover:bg-red-600">削除</button>
+                                <button type="submit" class="w-16 text-sm border rounded bg-red-500 text-white hover:bg-red-600">削除</button>
                             </form>
                         </td>
                     @endif
