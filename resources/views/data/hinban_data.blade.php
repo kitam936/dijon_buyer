@@ -55,15 +55,15 @@
 
     <div class="py-6 border">
         <div class=" mx-auto sm:px-4 lg:px-4 border ">
-            <table class="md:w-2/3 bg-white table-auto w-full text-center whitespace-no-wrap">
+            <table class="md:w-full bg-white table-auto w-full text-center whitespace-no-wrap">
                <thead>
                     <tr>
                         <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">年</th>
                         <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">BR</th>
                         <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">UNIT</th>
                         <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Face</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品番</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品名</th>
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品番</th>
+                        <th class="w-6/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品名</th>
                         {{-- <th class="w-3/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">元売価</th> --}}
                         {{-- <th class="w-3/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">現売価</th> --}}
                     </tr>
@@ -76,8 +76,8 @@
                         <td class="w-1/15 md:px-4 py-1">{{ $product->brand_id }}</td>
                         <td class="w-1/15 md:px-4 py-1"> {{ $product->unit_id }}</td>
                         <td class="w-1/15 md:px-4 py-1"> {{ $product->face_code }}</td>
-                        <td class="w-2/15 md:px-4 py-1"> {{ $product->hinban_id }}                            </td>
-                        <td class="w-4/15 md:px-4 py-1 text-left">{{ $product->hinban_name }}</td>
+                        <td class="w-2/15 md:px-4 py-1"> {{ $product->id }} </td>
+                        <td class="w-6/15 md:px-4 py-1 text-left">{{ $product->hinban_name }}</td>
                         {{-- <td class="w-1/15 md:px-4 py-1 text-right">{{ number_format($product->local_cur_price )}}</td> --}}
                         {{-- <td class="w-1/15 md:px-4 py-1 text-right">{{ number_format($product->local_yen_price )}}</td> --}}
 

@@ -15,40 +15,32 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
         [
             'id' => 1,
-            'name' => 'admin',
-            'email' => 'admin@test.com',
-            'password' => Hash::make('password123'),
+            'name' => '北村',
+            'email' => 'kitamura@dijon.co.jp',
+            'password' => Hash::make('tk9521dj'),
             'role_id' => 1,
             'shop_id' => 101,
             'mailService' => 1
         ],
         [
             'id' => 2,
-            'name' => 'manager',
-            'email' => 'manager@test.com',
-            'password' => Hash::make('password123'),
-            'role_id' => 5,
+            'name' => '村山',
+            'email' => 'murayama@dijon.co.jp',
+            'password' => Hash::make('im4278dj'),
+            'role_id' => 3,
             'shop_id' => 101,
             'mailService' => 1
         ],
         [
             'id' => 9,
-            'name' => 'buyer1',
-            'email' => 'buyer1@test.com',
-            'password' => Hash::make('password123'),
+            'name' => '古川',
+            'email' => 'furukawa@dijon.co.jp',
+            'password' => Hash::make('mf3847dj'),
             'role_id' => 7,
             'shop_id' => 101,
             'mailService' => 1
         ],
-        [
-            'id' => 10,
-            'name' => 'staff1',
-            'email' => 'staff12@test.com',
-            'password' => Hash::make('password123'),
-            'role_id' => 9,
-            'shop_id' => 101,
-            'mailService' => 0
-        ],
+
 
     ]);
     }

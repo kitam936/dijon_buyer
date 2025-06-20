@@ -129,7 +129,7 @@ class DataController extends Controller
         ->orderBy('id','asc')
         ->get();
         // dd($products);
-        dd($comment_ct);
+        // dd($comment_ct);
         return view('data.hinban_data',compact('products','years','units','brands'));
     }
 

@@ -12,7 +12,7 @@
                 <button onclick="location.href='{{ route('menu') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">Menu</button>
             </div>
             <div class="ml-2 mt-4 md:ml-4">
-            <button type="button" class="ml-2 mb-4 w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-600 rounded " onclick="location.href='{{ route('data.predata_create') }}'" >新規追加</button>
+            <button type="button" class="ml-2 mb-4 w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-600 rounded " onclick="location.href='{{ route('data.predata_create') }}'" >新規手入力追加</button>
             </div>
         </div>
 
@@ -110,7 +110,7 @@
                             <form action="{{ route('data.predata_destroy_one', ['id'=>$product->hinban_id]) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-16 border rounded bg-red-500 text-white hover:bg-red-600">削除</button>
+                                <button type="submit" class="w-16 border text-sm rounded bg-red-500 text-white hover:bg-red-600">削除</button>
                             </form>
                         </td>
                         @endif

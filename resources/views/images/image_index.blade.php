@@ -32,7 +32,7 @@
                     <select class="w-24 h-8 rounded text-sm pt-1 border mb-2 mr-4 " id="brand_code" name="brand_code" type="number" >
                     <option value="" @if(\Request::get('brand_code') == '0') selected @endif >指定なし</option>
                     @foreach ($brands as $brand)
-                        <option value="{{ $brand->id }}" @if(\Request::get('brand_code') == $brand->id ) selected @endif >{{ $brand->id  }}</option>
+                        <option value="{{ $brand->id }}" @if(\Request::get('brand_code') == $brand->id ) selected @endif >{{ $brand->id  }}={{ $brand->brand_name  }}</option>
                     @endforeach
                     </select>
                 </div>
@@ -58,7 +58,7 @@
                     <select class="w-24 h-8 rounded text-sm pt-1 mr-4 mb-2 border " id="face" name="face" type="text" >
                     <option value="" @if(\Request::get('face') == '0') selected @endif >指定なし</option>
                     @foreach ($faces as $face)
-                        <option value="{{ $face->face_code }}" @if(\Request::get('face') == $face->face_code ) selected @endif >{{ $face->face_code  }}</option>
+                        <option value="{{ $face->face_code }}" @if(\Request::get('face') == $face->face_code ) selected @endif >{{ $face->face_code  }}={{ $face->face_item  }}</option>
                     @endforeach
                     </select>
                     <div class="pl-2 mt-0 md:mt-0 md:ml-0 ml-0 ">

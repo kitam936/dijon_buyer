@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             BrandSeeder::class,
             UnitSeeder::class,
             FaceSeeder::class,
-            PreDataSeeder::class,
+            // PreDataSeeder::class,
             OrderStatusSeeder::class,
 
             ]);

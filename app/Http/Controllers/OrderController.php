@@ -117,16 +117,43 @@ class OrderController extends Controller
             ->orderBy('id','asc')
             ->get();
 
-            $units=DB::table('units')
-            ->select(['units.id'])
-            ->groupBy(['units.id'])
-            ->orderBy('units.id','asc')
+            // $units=DB::table('units')
+            // ->select(['units.id'])
+            // ->groupBy(['units.id'])
+            // ->orderBy('units.id','asc')
+            // ->get();
+
+            $units=DB::table('order_items')
+            ->join('skus','order_items.sku_id','=','skus.id')
+            ->join('hinbans','skus.hinban_id','=','hinbans.id')
+            ->join('units','hinbans.unit_id','=','units.id')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('units.season_id','LIKE','%'.$request->season_code.'%')
+            // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
+            ->select(['hinbans.unit_id'])
+            ->groupBy(['hinbans.unit_id'])
+            ->orderBy('hinbans.unit_id','asc')
             ->get();
 
-            $faces=DB::table('faces')
-            ->select(['faces.face_code','faces.face_item'])
-            ->groupBy(['faces.face_code','faces.face_item'])
-            ->orderBy('faces.face_code','asc')
+            // $faces=DB::table('faces')
+            // ->select(['faces.face_code','faces.face_item'])
+            // ->groupBy(['faces.face_code','faces.face_item'])
+            // ->orderBy('faces.face_code','asc')
+            // ->get();
+
+            $faces=DB::table('order_items')
+            ->join('skus','order_items.sku_id','=','skus.id')
+            ->join('hinbans','skus.hinban_id','=','hinbans.id')
+            ->join('faces','hinbans.face_code','=','faces.face_code')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            // ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
+            ->select(['hinbans.face_code','faces.face_item'])
+            ->groupBy(['hinbans.face_code','faces.face_item'])
+            ->orderBy('hinbans.face_code','asc')
             ->get();
 
 
@@ -166,16 +193,43 @@ class OrderController extends Controller
             ->orderBy('id','asc')
             ->get();
 
-            $units=DB::table('units')
-            ->select(['units.id'])
-            ->groupBy(['units.id'])
-            ->orderBy('units.id','asc')
+            // $units=DB::table('units')
+            // ->select(['units.id'])
+            // ->groupBy(['units.id'])
+            // ->orderBy('units.id','asc')
+            // ->get();
+
+            $units=DB::table('order_items')
+            ->join('skus','order_items.sku_id','=','skus.id')
+            ->join('hinbans','skus.hinban_id','=','hinbans.id')
+            ->join('units','hinbans.unit_id','=','units.id')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('units.season_id','LIKE','%'.$request->season_code.'%')
+            // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
+            ->select(['hinbans.unit_id'])
+            ->groupBy(['hinbans.unit_id'])
+            ->orderBy('hinbans.unit_id','asc')
             ->get();
 
-            $faces=DB::table('faces')
-            ->select(['faces.face_code','faces.face_item'])
-            ->groupBy(['faces.face_code','faces.face_item'])
-            ->orderBy('faces.face_code','asc')
+            // $faces=DB::table('faces')
+            // ->select(['faces.face_code','faces.face_item'])
+            // ->groupBy(['faces.face_code','faces.face_item'])
+            // ->orderBy('faces.face_code','asc')
+            // ->get();
+
+            $faces=DB::table('order_items')
+            ->join('skus','order_items.sku_id','=','skus.id')
+            ->join('hinbans','skus.hinban_id','=','hinbans.id')
+            ->join('faces','hinbans.face_code','=','faces.face_code')
+            ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
+            ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            // ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
+            ->select(['hinbans.face_code','faces.face_item'])
+            ->groupBy(['hinbans.face_code','faces.face_item'])
+            ->orderBy('hinbans.face_code','asc')
             ->get();
 
             $orders = DB::table('orders')

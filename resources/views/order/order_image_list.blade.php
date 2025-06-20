@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
 
             <div>
-            発注済画像リスト
+            発注済商品リスト
             </div>
         </h2>
         <div class="md:flex">
@@ -47,7 +47,7 @@
                         <select class="w-24 h-8 text-sm pt-1 mr-4 mb-2 border rounded" id="unit_code" name="unit_code" type="number" >
                         <option value="" @if(\Request::get('unit_code') == '0') selected @endif >指定なし</option>
                         @foreach ($units as $unit)
-                            <option value="{{ $unit->id }}" @if(\Request::get('unit_code') == $unit->id ) selected @endif >{{ $unit->id  }}</option>
+                            <option value="{{ $unit->unit_id }}" @if(\Request::get('unit_code') == $unit->unit_id ) selected @endif >{{ $unit->unit_id  }}</option>
                         @endforeach
                         </select>
                     </div>

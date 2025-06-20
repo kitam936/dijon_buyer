@@ -15,7 +15,7 @@
             </div>
 
             <div class="pl-2 mt-2 ml-2 ">
-                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('order_image_list') }}'" >画像リスト</button>
+                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('order_image_list') }}'" >発注済商品リスト</button>
             </div>
             </div>
 

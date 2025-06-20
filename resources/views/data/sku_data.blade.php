@@ -19,24 +19,24 @@
             <table class="md:w-2/3 bg-white table-auto text-center whitespace-no-wrap">
                <thead>
                     <tr>
-                        {{-- <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">SKU_code</th> --}}
+                        <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">SKU_id</th>
                         <th class="w-4/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Hinban</th>
                         <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Col</th>
                         <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Size</th>
                         <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">現地通貨コスト</th>
-                        <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">円建コスト</th>
+                        {{-- <th class="w-2/12 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">円建コスト</th> --}}
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach ($skus as $sku)
                     <tr>
-                        {{-- <td class="w-2/12 md:px-4 py-1">{{ $sku->sku_code }}</td> --}}
+                        <td class="w-2/12 md:px-4 py-1">{{ $sku->id }}</td>
                         <td class="w-4/12 md:px-4 py-1"> {{ $sku->hinban_id }}</td>
                         <td class="w-2/12 md:px-4 py-1"> {{ $sku->col_id }}</td>
                         <td class="w-2/12 md:px-4 py-1"> {{ $sku->size_id }}</td>
                         <td class="w-2/12 md:px-4 py-1"> {{ $sku->local_cur_price }}</td>
-                        <td class="w-2/12 md:px-4 py-1"> {{ $sku->local_yen_price }}</td>
+                        {{-- <td class="w-2/12 md:px-4 py-1"> {{ $sku->local_yen_price }}</td> --}}
                     </tr>
                     @endforeach
 
