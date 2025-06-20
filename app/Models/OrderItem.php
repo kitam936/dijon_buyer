@@ -15,6 +15,7 @@ class OrderItem extends Model
         'sku_id',
         'local_cur_price',
         'local_yen_price',
+        'expected_price',
         'order_pcs'
     ];
 

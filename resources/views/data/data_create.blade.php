@@ -31,7 +31,7 @@
 
                         <div class="p-2">
 
-                        <form method="POST" action="{{ route('data.sku_upsert') }}" class=" p-1" enctype="multipart/form-data">
+                        {{-- <form method="POST" action="{{ route('data.sku_upsert') }}" class=" p-1" enctype="multipart/form-data">
                             @csrf
                             <label for="sku_data" class="leading-7 text-sm text-gray-600">SKUデータ　</label>
                             <input type="file" id="sku_data" name="sku_data" accept=“.csv” class="w-1/3 ml-3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -43,7 +43,7 @@
                             <label for="hinban_data" class="leading-7 text-sm text-gray-600">品番データ　</label>
                             <input type="file" id="hinban_data" name="hinban_data" accept=“.csv” class="w-1/3 ml-3 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                             <button type="submit" class="w-36 text-sm text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded">品番データ更新</button>
-                        </form>
+                        </form> --}}
 
                         {{-- <form method="POST" action="{{ route('data.predata_upload') }}" class=" p-1" enctype="multipart/form-data">
                             @csrf
@@ -65,17 +65,19 @@
                             <input type="file" id="unit_data" name="unit_data" accept=“.csv” class="w-1/3 ml-2 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                             <button type="submit" class="w-36 text-sm text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded">UNITデータ更新</button>
                         </form>
-                        <form method="POST" action="{{ route('data.face_upsert') }}" class=" p-1" enctype="multipart/form-data">
-                            @csrf
-                            <label for="face_data" class="leading-7 text-sm text-gray-600">Faceデータ　</label>
-                            <input type="file" id="face_data" name="face_data" accept=“.csv” class="w-1/3 ml-2 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                            <button type="submit" class="w-36 text-sm text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded">Faceデータ更新</button>
-                        </form>
+
                         <form method="POST" action="{{ route('data.brand_upsert') }}" class=" p-1" enctype="multipart/form-data">
                             @csrf
                             <label for="brand_data" class="leading-7 text-sm text-gray-600">Brandデータ　</label>
                             <input type="file" id="brand_data" name="brand_data" accept=“.csv” class="w-1/3 ml-1 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                             <button type="submit" class="w-36 text-sm text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded">Brandデータ更新</button>
+                        </form>
+
+                        <form method="POST" action="{{ route('data.face_upsert') }}" class=" p-1" enctype="multipart/form-data">
+                            @csrf
+                            <label for="face_data" class="leading-7 text-sm text-gray-600">Faceデータ　</label>
+                            <input type="file" id="face_data" name="face_data" accept=“.csv” class="w-1/3 ml-2 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <button type="submit" class="w-36 text-sm text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded">Faceデータ更新</button>
                         </form>
 
                         <form method="POST" action="{{ route('data.col_upsert') }}" class=" p-1" enctype="multipart/form-data">

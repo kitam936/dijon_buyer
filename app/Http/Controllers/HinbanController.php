@@ -17,6 +17,9 @@ use App\Models\User;
 use App\Models\Sku;
 use Throwable;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendResvOrderMail;
+use App\Jobs\SendResvCommentMail;
+use App\Jobs\SendCreateHinbanMail;
 
 class HinbanController extends Controller
 {
@@ -171,7 +174,7 @@ class HinbanController extends Controller
     {
         $latest = DB::table('hinbans')
         ->join('brands', 'brands.id', '=', 'hinbans.brand_id')
-        ->select(['hinbans.id as hinban_id', 'hinbans.brand_id', 'hinbans.unit_id','hinbans.mix_rate','hinbans.face_code', 'hinbans.hinban_name', 'hinbans.hinban_info', 'hinbans.mix_rate', 'hinbans.season_id', 'hinbans.year_code', 'hinbans.shohin_gun', 'hinbans.kizoku_g', 'hinbans.seireki_unit', 'hinbans.kyotu_hinban', 'hinbans.vendor_id', 'hinbans.prod_code','brands.brand_name', 'hinbans.created_at', 'hinbans.updated_at'])
+        ->select(['hinbans.id as hinban_id', 'hinbans.brand_id', 'hinbans.unit_id','hinbans.mix_rate','hinbans.face_code', 'hinbans.hinban_name', 'hinbans.hinban_info', 'hinbans.mix_rate', 'hinbans.season_code', 'hinbans.year_code', 'hinbans.shohin_gun', 'hinbans.kizoku_g', 'hinbans.seireki_unit', 'hinbans.kyotu_hinban', 'hinbans.prod_code','brands.brand_name', 'hinbans.created_at', 'hinbans.updated_at'])
         ->orderBy('hinbans.created_at', 'desc') // 明確にテーブルを指定
         ->first();
 
@@ -200,9 +203,9 @@ class HinbanController extends Controller
         ->where('skus.seq', 6)
         ->first();
 
-        $latest_vendor = DB::table('vendors')
-        ->where('vendors.id', $latest->vendor_id)
-        ->first();
+        // $latest_vendor = DB::table('vendors')
+        // ->where('vendors.id', $latest->vendor_id)
+        // ->first();
 
         $user = User::findOrFail(Auth::id());
 
@@ -271,16 +274,80 @@ class HinbanController extends Controller
 
         // dd($latest,$latest_sku1,$latest_vendor,$latest_sku2,$latest_sku3,$latest_sku4,$latest_sku5,$latest_sku6,$user,$vendors,$product,$units,$faces,$brands,$hinbans,$cols,$sizes);
         // dd($latest);
-        return view('hinban.hinban_create2',compact('latest','latest_sku1','latest_vendor','user','vendors','product','units','faces','brands','hinbans','cols','sizes','latest_sku2','latest_sku3','latest_sku4','latest_sku5','latest_sku6'));
+        return view('hinban.hinban_create2',compact('latest','latest_sku1','user','vendors','product','units','faces','brands','hinbans','cols','sizes','latest_sku2','latest_sku3','latest_sku4','latest_sku5','latest_sku6'));
     }
 
     public function show($id)
     {
         $product = DB::table('hinbans')
+        ->join('units','units.id','=','hinbans.unit_id')
+        ->join('brands','brands.id','=','hinbans.brand_id')
+        ->where('hinbans.id',$id)
+        ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','hinbans.hinban_info','hinbans.mix_rate','units.season_id','hinbans.year_code','hinbans.shohin_gun','hinbans.kizoku_g','hinbans.seireki_unit','hinbans.kyotu_hinban','hinbans.prod_code','hinbans.created_at','hinbans.updated_at')
+        ->first();
+
+        $skus = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        // ->where('skus.col_id','<>','99')
+        // ->select(['skus.id','skus.hinban_id','skus.col_id','skus.size_id'])
+        ->get();
+
+        $sku1 = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        ->where('skus.seq',1)
+        ->first();
+
+        $sku2 = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        ->where('skus.seq',2)
+        ->first();
+
+        $sku3 = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        ->where('skus.seq',3)
+        ->first();
+
+        $sku4 = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        ->where('skus.seq',4)
+        ->first();
+
+        $sku5 = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        ->where('skus.seq',5)
+        ->first();
+
+        $sku6 = DB::table('skus')
+        ->where('skus.hinban_id',$id)
+        ->where('skus.seq',6)
+        ->first();
+
+        $ex_rate = DB::table('ex_rates')
+            ->first();
+
+        $cost_rate = DB::table('cost_rates')
+            ->first();
+
+        $comments = DB::table('comments')
+        ->join('users','users.id','=','comments.user_id')
+        ->where('comments.hinban_id',$id)
+        ->select(['comments.id','comments.hinban_id','comments.user_id','users.name','comments.comment','comments.created_at'])
+        ->get();
+
+        // dd($product,$skus,$ex_rate,$cost_rate);
+        // dd($product,$sku1,$sku2,$sku3,$sku4,$sku5,$sku6);
+        // dd($comments);
+
+            return view('hinban.hinban_show',compact('product','skus','ex_rate','cost_rate','sku1','sku2','sku3','sku4','sku5','sku6','comments'));
+    }
+
+    public function show2($id)
+    {
+        $product = DB::table('hinbans')
             ->join('units','units.id','=','hinbans.unit_id')
             ->join('brands','brands.id','=','hinbans.brand_id')
             ->where('hinbans.id',$id)
-            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','hinbans.hinban_info','hinbans.mix_rate','units.season_id','hinbans.year_code','hinbans.shohin_gun','hinbans.kizoku_g','hinbans.seireki_unit','hinbans.kyotu_hinban','hinbans.vendor_id','hinbans.prod_code','hinbans.created_at','hinbans.updated_at')
+            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','hinbans.hinban_info','hinbans.mix_rate','units.season_id','hinbans.year_code','hinbans.shohin_gun','hinbans.kizoku_g','hinbans.seireki_unit','hinbans.kyotu_hinban','hinbans.prod_code','hinbans.created_at','hinbans.updated_at')
             ->first();
 
         $skus = DB::table('skus')
@@ -328,25 +395,27 @@ class HinbanController extends Controller
         // dd($product,$skus,$ex_rate,$cost_rate);
         // dd($product,$sku1,$sku2,$sku3,$sku4,$sku5,$sku6);
 
-            return view('hinban.hinban_show',compact('product','skus','ex_rate','cost_rate','sku1','sku2','sku3','sku4','sku5','sku6'));
+            return view('hinban.hinban_show2',compact('product','skus','ex_rate','cost_rate','sku1','sku2','sku3','sku4','sku5','sku6'));
     }
+
 
     public function store(Request $request)
     {
         // dd($request->file('image1') );
 
         $request->validate([
-            'vendor_id2' => 'required',
+            // 'vendor_id2' => 'required',
             'hinban_id2' => 'required',
             'hinban_name' => 'required|max:100',
             'hinban_info' => 'nullable|max:500',
             'local_cur_price' => 'nullable|numeric',
-            'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image5' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image6' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image5' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image6' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            // 'image6' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $hinban = $request['hinban_id2'];
@@ -388,7 +457,7 @@ class HinbanController extends Controller
         ->where('hinban_id',$hinban)
         ->first();
 
-        // dd($datas,$hinban,);
+
 
         $folderName='sku_images';
 
@@ -397,20 +466,20 @@ class HinbanController extends Controller
             $fileNameToStore1 = $sku_id1. '.' . $extension1;
             $resizedImage1 = InterventionImage::make($request->file('image1'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore1, $resizedImage1 );
         }else{
             $fileNameToStore1 = null;
         };
 
-        // dd($fileNameToStore1);
+
 
         if(!is_null($request->file('image2')) && ($col2 && $size2) ){
             $extension2 = $request->file('image2')->extension();
             $fileNameToStore2 = $sku_id2. '.' . $extension2;
             $resizedImage2 = InterventionImage::make($request->file('image2'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore2, $resizedImage2 );
         }else{
             $fileNameToStore2 = null;
@@ -420,7 +489,7 @@ class HinbanController extends Controller
             $fileNameToStore3 = $sku_id3. '.' . $extension3;
             $resizedImage3 = InterventionImage::make($request->file('image3'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore3, $resizedImage3 );
         }else{
             $fileNameToStore3 = null;
@@ -430,7 +499,7 @@ class HinbanController extends Controller
             $fileNameToStore4 = $sku_id4. '.' . $extension4;
             $resizedImage4 = InterventionImage::make($request->file('image4'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore4, $resizedImage4 );
         }else{
             $fileNameToStore4 = null;
@@ -440,7 +509,7 @@ class HinbanController extends Controller
             $fileNameToStore5 = $sku_id5. '.' . $extension5;
             $resizedImage5 = InterventionImage::make($request->file('image5'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore5, $resizedImage5 );
         }else{
             $fileNameToStore5 = null;
@@ -450,12 +519,12 @@ class HinbanController extends Controller
             $fileNameToStore6 = $sku_id6. '.' . $extension6;
             $resizedImage6 = InterventionImage::make($request->file('image6'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore6, $resizedImage6 );
         }else{
             $fileNameToStore6 = null;
         };
-        // dd($fileNameToStore1,$fileNameToStore2,$fileNameToStore3,$fileNameToStore4,$fileNameToStore5,$fileNameToStore6);
+
 
         DB::beginTransaction();
 
@@ -470,20 +539,19 @@ class HinbanController extends Controller
                 'hinban_info' => $request['hinban_info'],
                 // 'local_cur_price' => $request['local_cur_price'],
                 'mix_rate' => $request['mix_rate'],
-                'season_id' => $data->season_id,
+                'season_code' => $data->season_id,
                 'year_code' => $data->year_code,
                 'shohin_gun' => $data->shohin_gun,
                 'kizoku_g' => $data->kizoku_g,
                 'seireki_unit' => $data->seireki_unit,
                 'kyotu_hinban' => $data->kyotu_hinban,
-                'vendor_id' => $request['vendor_id2'],
+                // 'vendor_id' => $request['vendor_id2'],
             ]);
 
-            //  dd($fileNameToStore1,$fileNameToStore2,$fileNameToStore3,$fileNameToStore4,$fileNameToStore5,$fileNameToStore6);
 
 
             if(!is_null($request->file('image1')) && ($col1 && $size1)){
-                // dd($fileNameToStore1);
+
                 Sku::create([
                     'id' => $sku_id1,
                     'seq' => $request['sku_id1'],
@@ -733,14 +801,14 @@ class HinbanController extends Controller
         }
 
 
-        $users = User::Where('mailService', 1)
-        ->distinct()
-        // ->select('id')
-        ->get()
-        ->toArray();
+        // $users = User::Where('mailService', 1)
+        // ->distinct()
 
-        $touroku = Hinban::findOrFail($request['hinban_id2'])
-        ->toArray();
+        // ->get()
+        // ->toArray();
+
+        // $touroku = Hinban::findOrFail($request['hinban_id2'])
+        // ->toArray();
 
 
         // foreach($users as $user){
@@ -748,18 +816,20 @@ class HinbanController extends Controller
         //     SendStintMail::dispatch($touroku,$user);
         // }
 
-        return to_route('hinban.hinban_index2')->with(['message'=>'品番が登録されました','status'=>'info']);
+        // return to_route('hinban.hinban_index2')->with(['message'=>'品番が登録されました','status'=>'info']);
+        return to_route('hinban_create')->with(['message'=>'品番が登録されました','status'=>'info']);
     }
+
+
 
     public function edit($id)
     {
         $prod = DB::table('hinbans')
-        ->join('vendors', 'vendors.id', '=', 'hinbans.vendor_id')
         ->join('brands', 'brands.id', '=', 'hinbans.brand_id')
         ->join('units', 'units.id', '=', 'hinbans.unit_id')
         ->join('faces', 'faces.face_code', '=', 'hinbans.face_code')
         ->where('hinbans.id', $id)
-        ->select(['hinbans.id as hinban_id', 'hinbans.brand_id', 'hinbans.unit_id','hinbans.mix_rate','hinbans.face_code', 'hinbans.hinban_name', 'hinbans.hinban_info', 'hinbans.mix_rate', 'units.season_id', 'hinbans.year_code', 'hinbans.shohin_gun', 'hinbans.kizoku_g', 'hinbans.seireki_unit', 'hinbans.kyotu_hinban', 'hinbans.vendor_id', 'hinbans.prod_code','brands.brand_name','faces.face_item','vendors.vendor_name'])
+        ->select(['hinbans.id as hinban_id', 'hinbans.brand_id', 'hinbans.unit_id','hinbans.mix_rate','hinbans.face_code', 'hinbans.hinban_name', 'hinbans.hinban_info', 'hinbans.mix_rate', 'units.season_id', 'hinbans.year_code', 'hinbans.shohin_gun', 'hinbans.kizoku_g', 'hinbans.seireki_unit', 'hinbans.kyotu_hinban', 'hinbans.prod_code','brands.brand_name','faces.face_item'])
         ->first();
 
         $prod_sku1 = DB::table('skus')
@@ -829,7 +899,7 @@ class HinbanController extends Controller
         $hinban = Hinban::findOrFail($id);
 
         $request->validate([
-            'vendor_id' => 'required',
+            // 'vendor_id' => 'required',
             'hinban_name' => 'required|max:100',
             'hinban_info' => 'nullable|max:500',
             'local_cur_price' => 'nullable|numeric',
@@ -899,7 +969,7 @@ class HinbanController extends Controller
             $fileNameToStore1 = $sku_id1. '.' . $extension1;
             $resizedImage1 = InterventionImage::make($request->file('image1'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore1, $resizedImage1 );
         }else{
             $fileNameToStore1 = null;
@@ -910,7 +980,7 @@ class HinbanController extends Controller
             $fileNameToStore2 = $sku_id2. '.' . $extension2;
             $resizedImage2 = InterventionImage::make($request->file('image2'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore2, $resizedImage2 );
         }else{
             $fileNameToStore2 = null;
@@ -921,7 +991,7 @@ class HinbanController extends Controller
             $fileNameToStore3 = $sku_id3. '.' . $extension3;
             $resizedImage3 = InterventionImage::make($request->file('image3'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore3, $resizedImage3 );
         }else{
             $fileNameToStore3 = null;
@@ -932,7 +1002,7 @@ class HinbanController extends Controller
             $fileNameToStore4 = $sku_id4. '.' . $extension4;
             $resizedImage4 = InterventionImage::make($request->file('image4'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore4, $resizedImage4 );
         }else{
             $fileNameToStore4 = null;
@@ -943,7 +1013,7 @@ class HinbanController extends Controller
             $fileNameToStore5 = $sku_id5. '.' . $extension5;
             $resizedImage5 = InterventionImage::make($request->file('image5'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore5, $resizedImage5 );
         }else{
             $fileNameToStore5 = null;
@@ -954,7 +1024,7 @@ class HinbanController extends Controller
             $fileNameToStore6 = $sku_id6. '.' . $extension6;
             $resizedImage6 = InterventionImage::make($request->file('image6'))
             ->orientate()
-            ->resize(400, 400,function($constraint){$constraint->aspectRatio();})->encode();
+            ->resize(800, 800,function($constraint){$constraint->aspectRatio();})->encode();
             Storage::put('public/sku_images/' . $fileNameToStore6, $resizedImage6 );
         }else{
             $fileNameToStore6 = null;
@@ -980,13 +1050,13 @@ class HinbanController extends Controller
                 $hinban->hinban_name = $request['hinban_name'];
                 $hinban->hinban_info = $request['hinban_info'];
                 $hinban->mix_rate = $request['mix_rate'];
-                // $hinban->season_id = $request['season_id'];
+                // $hinban->season_code = $request['season_code'];
                 // $hinban->year_code = $request['year_code'];
                 // $hinban->shohin_gun = $request['shohin_gun'];
                 // $hinban->kizoku_g = $request['kizoku_g'];
                 // $hinban->seireki_unit = $request['seireki_unit'];
                 // $hinban->kyotu_hinban = $request['kyotu_hinban'];
-                $hinban->vendor_id = $request['vendor_id'];
+                // $hinban->vendor_id = $request['vendor_id'];
                 $hinban->save();
 
             // dd($hinban->toArray(),$fileNameToStore1,$fileNameToStore2,$fileNameToStore3,$fileNameToStore4,$fileNameToStore5,$fileNameToStore6);
@@ -1277,8 +1347,9 @@ class HinbanController extends Controller
             ->join('brands','hinbans.brand_id','=','brands.id')
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('units.season_id','LIKE','%'.$request->season_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_id.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->whereNotNull('skus.sku_code')
             ->select('skus.hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name','skus.id as sku_id','skus.sku_code','skus.col_id','skus.size_id','skus.local_cur_price','skus.length','skus.width','skus.sku_image')
             ->orderBy('skus.id','asc')
@@ -1292,8 +1363,9 @@ class HinbanController extends Controller
             ->join('units','hinbans.unit_id','=','units.id')
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('units.season_id','LIKE','%'.$request->season_code.'%')
             // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->select(['hinbans.unit_id'])
             ->groupBy(['hinbans.unit_id'])
             ->orderBy('hinbans.unit_id','asc')
@@ -1303,7 +1375,7 @@ class HinbanController extends Controller
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
             // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->select(['units.season_id','units.season_name'])
             ->groupBy(['units.season_id','units.season_name'])
             ->orderBy('units.season_id','asc')
@@ -1312,8 +1384,8 @@ class HinbanController extends Controller
             ->join('faces','hinbans.face_code','=','faces.face_code')
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            // ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_id.'%')
+            // ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->select(['hinbans.face_code','faces.face_item'])
             ->groupBy(['hinbans.face_code','faces.face_item'])
             ->orderBy('hinbans.face_code','asc')
@@ -1337,8 +1409,9 @@ class HinbanController extends Controller
             ->join('brands','hinbans.brand_id','=','brands.id')
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('units.season_id','LIKE','%'.$request->season_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_id.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->whereNotNull('skus.sku_code')
             ->select('skus.hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name','skus.id as sku_id','skus.sku_code','skus.col_id','skus.size_id','skus.local_cur_price','skus.length','skus.width','skus.sku_image')
             ->orderBy('skus.created_at','desc')
@@ -1352,8 +1425,9 @@ class HinbanController extends Controller
             ->join('units','hinbans.unit_id','=','units.id')
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
+            ->where('units.season_id','LIKE','%'.$request->season_code.'%')
             // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->select(['hinbans.unit_id'])
             ->groupBy(['hinbans.unit_id'])
             ->orderBy('hinbans.unit_id','asc')
@@ -1363,7 +1437,7 @@ class HinbanController extends Controller
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
             // ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
-            ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
+            ->where('hinbans.face_code','LIKE','%'.$request->face.'%')
             ->select(['units.season_id','units.season_name'])
             ->groupBy(['units.season_id','units.season_name'])
             ->orderBy('units.season_id','asc')
@@ -1372,7 +1446,7 @@ class HinbanController extends Controller
             ->join('faces','hinbans.face_code','=','faces.face_code')
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
-            ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
+            ->where('hinbans.unit_id','LIKE','%'.$request->unit_id.'%')
             // ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
             ->select(['hinbans.face_code','faces.face_item'])
             ->groupBy(['hinbans.face_code','faces.face_item'])
@@ -1417,6 +1491,19 @@ class HinbanController extends Controller
 
     public function destroy_one($id)
     {
+        $skus=DB::table('skus')
+        ->where('hinban_id',$id)
+        ->get();
+
+        foreach($skus as $sku){
+            $filePath = 'public/sku_images/' . $sku->sku_image;
+
+            // dd($sku,$filePath);
+
+            if(Storage::exists($filePath)){
+                Storage::delete($filePath);
+            }
+        }
         $hinban = Hinban::findOrFail($id);
         $hinban->delete();
 

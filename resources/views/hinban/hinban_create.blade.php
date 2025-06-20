@@ -8,11 +8,13 @@
 
         <div class="flex mt-4">
         <div class="ml-2 md:ml-4">
-            <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品</button>
+            <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品登録Data</button>
         </div>
+        @if($latest)
         <div class="ml-2 md:ml-4">
             <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-600 rounded " onclick="location.href='{{ route('hinban_create2') }}'" >前回コピー</button>
         </div>
+        @endif
 
         </div>
 
@@ -25,7 +27,7 @@
                     <div>
                         <input type="hidden" id="user_id" name="user_id" value="{{ $user->id }}" />
                     </div>
-                    <div class="relative ml-2 mr-0">
+                    {{-- <div class="relative ml-2 mr-0">
                         <x-label for="vendor_id" value="仕入先" />
                         <select  id="vendor_id" name="vendor_id"  class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
                             <option value="" @if(\Request::get('vendor_id') == '0') selected  @endif >仕入先選択</option>
@@ -33,7 +35,7 @@
                                 <option value="{{ $vendor->id }}" @if(\Request::get('vendor_id') == $vendor->id) selected @endif>{{ $vendor->id }}={{ $vendor->vendor_name }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="flex">
@@ -144,7 +146,7 @@
                 </div>
                 <div class="pl-0 mt-0 ml-2">
                     <x-label for="local_cur_price" value="現地価格" />
-                    <input type="number" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="local_cur_price" value="{{ \Request::get('local_cur_price') }}"></input>
+                    <input type="number" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="local_cur_price" value="{{ old('local_cur_price') }}"></input>
                 </div>
 
                 <div class="pl-0 mt-2 md:mt-2 ml-2 ">
@@ -354,11 +356,11 @@
                         </select>
                         <div class="pl-0 mt-0 md:mt-0 ml-2 ">
                             {{-- <x-label for="length" value=" 着丈1" /> --}}
-                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="着丈"  name="length1" value="{{ old('length1') }}"></input>
+                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="着丈"  name="length6" value="{{ old('length6') }}"></input>
                         </div>
                         <div class="pl-0 mt-0 md:mt-0 ml-2 ">
                             {{-- <x-label for="width" value="身幅" /> --}}
-                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="身幅"  name="width1" value="{{ old('width6') }}"></input>
+                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="身幅"  name="width6" value="{{ old('width6') }}"></input>
                         </div>
                         </div>
                         <input type="file" id="image6" name="image6" accept=“image/png,image/jpeg,image/jpg” class="w-100 md:ml-2 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -404,10 +406,6 @@
         hinban.addEventListener('change', function(){
         this.form.submit()
         })
-
-
-
-
 
 
     </script>

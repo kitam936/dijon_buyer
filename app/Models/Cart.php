@@ -12,7 +12,6 @@ class Cart extends Model
         'user_id',
         'sku_id',
         'local_cur_price',
-        'local_yen_price',
         'pcs'
     ];
 

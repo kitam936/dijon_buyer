@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('vendor_id');
             $table->string('order_status')->default('1');
+        //    order_dateを追加
+            $table->dateTime('order_date');
             $table->text('order_memo')->nullable();
             $table->timestamps();
         });

@@ -8,7 +8,7 @@
 
         <div class="flex mt-4">
         <div class="ml-2 md:ml-4">
-            <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品</button>
+            <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品登録Data</button>
         </div>
 
         </div>
@@ -22,7 +22,7 @@
                     <div>
                         <input type="hidden" id="user_id" name="user_id" value="{{ $user->id }}" />
                     </div>
-                    <div class="relative ml-2 mr-0">
+                    {{-- <div class="relative ml-2 mr-0">
                         <x-label for="vendor_id" value="仕入先" />
                         <select  id="vendor_id" name="vendor_id"  class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
                             <option value="{{ $latest_vendor->id }}" @if(\Request::get('vendor_id') == '0') selected  @endif >{{ $latest_vendor->vendor_name }}</option>
@@ -30,15 +30,15 @@
                                 <option value="{{ $vendor->id }}" @if(\Request::get('vendor_id') == $vendor->id) selected @endif>{{ $vendor->id }}={{ $vendor->vendor_name }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="flex">
                 <div class="relative ml-2 mr-0">
                     <x-label for="brand_id" value="Brand" />
                     <select  id="brand_id" name="brand_id"  class="w-28 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                        <option value="{{ $latest->brand_id }}" @if(\Request::get('brand_id') == '0') selected  @endif >{{ $latest->brand_name }}</option>
-
+                        {{-- <option value="{{ $latest->brand_id }}" @if(\Request::get('brand_id') == '0') selected  @endif >{{ $latest->brand_name }}</option> --}}
+                        <option value="" @if(\Request::get('brand_id') == '0') selected  @endif >Bd選択</option>
                         @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" @if(\Request::get('brand_id') == $brand->id) selected @endif>{{ $brand->id }}={{ $brand->brand_name }}</option>
 
@@ -117,7 +117,7 @@
 
                 <div class="pl-0 mt-0 ml-2">
                     {{-- <x-label for="vendor_id2" value="Vendor" /> --}}
-                    <input type="hidden" readonly class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="vendor_id2" value="{{ $latest->vendor_id }}"></input>
+                    {{-- <input type="hidden" readonly class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="vendor_id2" value="{{ $latest->vendor_id }}"></input> --}}
                 </div>
                 <div class="flex">
                 <div class="pl-0 mt-0 ml-2">
@@ -156,7 +156,7 @@
                         <div class="flex">
                         <input type="hidden" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="sku_id1" value="1"></input>
                         <select  id="col_id1" name="col_id1"  class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku1->col_id }}" @if(\Request::get('col_id1') == '0') selected @endif >{{ $latest_sku1->col_id }}</option>
+                            <option value="" @if(\Request::get('col_id1') == '0') selected @endif >色1</option>
 
                             @foreach ($cols as $col)
                                 <option value="{{ $col->id }}" @if(old('col_id1') == $col->id) selected @endif>{{ $col->id }}={{ $col->col_name }}</option>
@@ -165,7 +165,7 @@
                         </select>
 
                         <select  id="size_id1" name="size_id1"  class="w-20 h-10 ml-2 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku1->size_id }}" @if(\Request::get('size_id1') == '0') selected @endif >{{ $latest_sku1->size_id }}</option>
+                            <option value="" @if(\Request::get('size_id1') == '0') selected @endif >SZ1</option>
 
                             @foreach ($sizes as $size)
                                 <option value="{{ $size->id }}" @if(old('size_id1') == $size->id) selected @endif>{{ $size->id }}={{ $size->size_name }}</option>
@@ -191,7 +191,7 @@
                         <div class="flex">
                         <input type="hidden" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="sku_id2" value="2"></input>
                         <select  id="col_id2" name="col_id2"  class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku2->col_id }}" @if(\Request::get('col_id2') == '0') selected @endif >色2</option>
+                            <option value="" @if(\Request::get('col_id2') == '0') selected @endif >色2</option>
 
                             @foreach ($cols as $col)
                                 <option value="{{ $col->id }}" @if(old('col_id1') == $col->id) selected @endif>{{ $col->id }}={{ $col->col_name }}</option>
@@ -200,7 +200,7 @@
                         </select>
 
                         <select  id="size_id2" name="size_id2"  class="w-20 h-10 ml-2 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku2->size_id }}" @if(\Request::get('size_id2') == '0') selected @endif >SZ2</option>
+                            <option value="" @if(\Request::get('size_id2') == '0') selected @endif >SZ2</option>
 
                             @foreach ($sizes as $size)
                                 <option value="{{ $size->id }}" @if(old('size_id2') == $size->id) selected @endif>{{ $size->id }}={{ $size->size_name }}</option>
@@ -227,7 +227,7 @@
                         <div class="flex">
                         <input type="hidden" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="sku_id3" value="3"></input>
                         <select  id="col_id3" name="col_id3"  class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku3->col_id }}" @if(\Request::get('col_id3') == '0') selected @endif >色3/option>
+                            <option value="" @if(\Request::get('col_id3') == '0') selected @endif >色3</option>
 
                             @foreach ($cols as $col)
                                 <option value="{{ $col->id }}" @if(old('col_id3') == $col->id) selected @endif>{{ $col->id }}={{ $col->col_name }}</option>
@@ -236,7 +236,7 @@
                         </select>
 
                         <select  id="size_id3" name="size_id3"  class="w-20 h-10 ml-2 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku3->size_id }}" @if(\Request::get('size_id3') == '0') selected @endif >SZ3</option>
+                            <option value="" @if(\Request::get('size_id3') == '0') selected @endif >SZ3</option>
 
                             @foreach ($sizes as $size)
                                 <option value="{{ $size->id }}" @if(old('size_id3') == $size->id) selected @endif>{{ $size->id }}={{ $size->size_name }}</option>
@@ -263,7 +263,7 @@
                         <div class="flex">
                         <input type="hidden" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="sku_id4" value="4"></input>
                         <select  id="col_id4" name="col_id4"  class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku4->col_id }}" @if(\Request::get('col_id4') == '0') selected @endif >色4</option>
+                            <option value="" @if(\Request::get('col_id4') == '0') selected @endif >色4</option>
 
                             @foreach ($cols as $col)
                                 <option value="{{ $col->id }}" @if(old('col_id4') == $col->id) selected @endif>{{ $col->id }}={{ $col->col_name }}</option>
@@ -272,7 +272,7 @@
                         </select>
 
                         <select  id="size_id4" name="size_id4"  class="w-20 h-10 ml-2 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku4->size_id }}" @if(\Request::get('size_id4') == '0') selected @endif >SZ4</option>
+                            <option value="" @if(\Request::get('size_id4') == '0') selected @endif >SZ4</option>
 
                             @foreach ($sizes as $size)
                                 <option value="{{ $size->id }}" @if(old('size_id4') == $size->id) selected @endif>{{ $size->id }}={{ $size->size_name }}</option>
@@ -298,7 +298,7 @@
                         <div class="flex">
                         <input type="hidden" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="sku_id5" value="5"></input>
                         <select  id="col_id5" name="col_id5"  class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku5->col_id }}" @if(\Request::get('col_id5') == '0') selected @endif >色5</option>
+                            <option value="" @if(\Request::get('col_id5') == '0') selected @endif >色5</option>
 
                             @foreach ($cols as $col)
                                 <option value="{{ $col->id }}" @if(old('col_id5') == $col->id) selected @endif>{{ $col->id }}={{ $col->col_name }}</option>
@@ -307,7 +307,7 @@
                         </select>
 
                         <select  id="size_id5" name="size_id5"  class="w-20 h-10 ml-2 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku5->size_id }}" @if(\Request::get('size_id5') == '0') selected @endif >SZ5</option>
+                            <option value="" @if(\Request::get('size_id5') == '0') selected @endif >SZ5</option>
 
                             @foreach ($sizes as $size)
                                 <option value="{{ $size->id }}" @if(old('size_id5') == $size->id) selected @endif>{{ $size->id }}={{ $size->size_name }}</option>
@@ -333,7 +333,7 @@
                         <div class="flex">
                         <input type="hidden" class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="sku_id6" value="6"></input>
                         <select  id="col_id6" name="col_id6"  class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku6->col_id }}" @if(\Request::get('col_id6') == '0') selected @endif >色6</option>
+                            <option value="" @if(\Request::get('col_id6') == '0') selected @endif >色6</option>
 
                             @foreach ($cols as $col)
                                 <option value="{{ $col->id }}" @if(old('col_id6') == $col->id) selected @endif>{{ $col->id }}={{ $col->col_name }}</option>
@@ -342,7 +342,7 @@
                         </select>
 
                         <select  id="size_id6" name="size_id6"  class="w-20 h-10 ml-2 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                            <option value="{{ $latest_sku6->size_id }}" @if(\Request::get('size_id6') == '0') selected @endif >SZ6</option>
+                            <option value="" @if(\Request::get('size_id6') == '0') selected @endif >SZ6</option>
 
                             @foreach ($sizes as $size)
                                 <option value="{{ $size->id }}" @if(old('size_id6') == $size->id) selected @endif>{{ $size->id }}={{ $size->size_name }}</option>
@@ -351,11 +351,11 @@
                         </select>
                         <div class="pl-0 mt-0 md:mt-0 ml-2 ">
                             {{-- <x-label for="length" value=" 着丈1" /> --}}
-                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="着丈"  name="length1" value="{{ $latest_sku6->length }}"></input>
+                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="着丈"  name="length6" value="{{ $latest_sku6->length }}"></input>
                         </div>
                         <div class="pl-0 mt-0 md:mt-0 ml-2 ">
                             {{-- <x-label for="width" value="身幅" /> --}}
-                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="身幅"  name="width1" value="{{ $latest_sku6->width}}"></input>
+                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="身幅"  name="width6" value="{{ $latest_sku6->width}}"></input>
                         </div>
                         </div>
                         <input type="file" id="image6" name="image6" accept=“image/png,image/jpeg,image/jpg” class="w-100 md:ml-2 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">

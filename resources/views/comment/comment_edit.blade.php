@@ -8,10 +8,10 @@
             </h2>
             <div class="flex">
             <div class="ml-10 mb-2">
-                <button type="button" class="w-32 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('report_list') }}'" >Reportリスト</button>
+                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >登録品番Data</button>
             </div>
             <div class="ml-4 mb-2">
-                <button type="button" onclick="location.href='{{ route('comment_detail',['comment'=>$comment->id]) }}'" class="w-32 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">コメント詳細</button>
+                <button type="button" onclick="location.href='{{ route('comment_detail',['comment'=>$comment->id]) }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">コメント詳細</button>
             </div>
             <div>
             {{-- <form id="delete_{{$comment->id}}" method="POST" action="{{ route('comment_destroy',['comment'=>$comment->id]) }}">
@@ -49,7 +49,7 @@
                             <div class="mb-2 md:ml-2 ">
                                 <x-label for="name" value="投稿者" />
                                 <div class="pl-2 w-72 h-6 text-sm items-center bg-gray-100 border rounded" name="name" value="{{ $comment->name }}">{{ $comment->name }}</div>
-                                <input type="hidden" class="pl-2 w-full h-6 text-sm items-center bg-gray-100 border rounded" name="report_id2" value="{{ $comment->report_id }}"/>
+                                <input type="hidden" class="pl-2 w-full h-6 text-sm items-center bg-gray-100 border rounded" name="hinban_id2" value="{{ $comment->hinban_id }}"/>
                                 <input type="hidden" class="pl-0  ml-0 md:ml-2 w-32 h-6 items-center bg-gray-100 border rounded" name="user_id2"  value="{{ $comment->user_id }}"/>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
 
                         <div class="p-2 w-1/2 mx-auto">
                         <div class="p-2 w-full mt-4 flex justify-around">
-                            <button type="submit" class="w-32 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">更新</button>
+                            <button type="submit" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">更新</button>
                         </div>
                         </div>
                     </div>

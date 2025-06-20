@@ -3,33 +3,20 @@
 
         <h2 class="font-semibold text-xl mb-4 text-gray-800 dark:text-gray-200 leading-tight">
         <div>
-            商品詳細
+            商品詳細2
         </div>
         </h2>
 
         <div><input type="hidden" name="hin_id" value="{{ $product->hinban_id }}" ></div>
         <x-flash-message status="session('status')"/>
 
-        <div class="md:flex">
-        <div class="flex ml-4 ">
-        <div class="ml-2 mb-2 md:mb-0">
-            <button type="button" onclick="location.href='{{ route('hinban.hinban_index2') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">商品登録Data</button>
-        </div>
+        <div class="flex ml-8 ">
+            <div class="p-0 w-full ml-6 flex mt-2 md:mt-0">
+                <button type="button" onclick="window.location.href='{{ url()->previous()}}'" class="w-32 h-8 text-white text-sm bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-600 rounded ">戻る</button>
+            </div>
 
         </div>
 
-        <div class="flex ml-4 mt-4 md:mt-0 md:ml-4">
-            <div class="ml-2 mb-0">
-                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded " onclick="location.href='{{ route('hinban_edit',['id'=>$product->hinban_id]) }}'" >編集</button>
-            </div>
-            <div class="ml-2 mb-2 md:mb-0">
-                <button type="button" onclick="location.href='{{ route('comment_create',['hinban'=>$product->hinban_id]) }}'" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">コメント登録</button>
-            </div>
-            {{-- <div class="ml-4 mb-0">
-                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded " onclick="location.href=''" >＊＊＊</button>
-            </div> --}}
-        </div>
-        </div>
 
 
 
@@ -140,6 +127,8 @@
 
     <div class="py-0 border">
         <div class=" mx-auto sm:px-4 lg:px-4 border ">
+
+
             <table class="md:w-full bg-white table-auto w-full text-center whitespace-no-wrap">
                 <thead>
                     <tr>
@@ -150,7 +139,7 @@
                         <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Size</th>
                         <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">現地ｺｽﾄ</th>
                         {{-- <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">円建ｺｽﾄ</th> --}}
-                        <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">概算ｺｽﾄ</th>
+                        <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">想定円ｺｽﾄ</th>
                         <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
                     </tr>
                 </thead>
@@ -184,39 +173,6 @@
                 </tbody>
             </table>
         </div>
-<br>
-
-
-        <div class=" mx-auto sm:px-4 lg:px-4 border ">
-            コメントリスト
-            <table class="md:w-full bg-white table-auto w-full text-center whitespace-no-wrap">
-                <thead>
-                    <tr>
-                        <th class="w-3/12 md:3/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Date</th>
-                        <th class="w-2/12 md:2/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">投稿者</th>
-                        <th class="w-7/12 md:7/12 md:px-4  title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">comment</th>
-
-                    </tr>
-                </thead>
-                <br>
-
-
-
-                <tbody>
-                    @foreach ($comments as $comment)
-                    <tr>
-                    <td class="w-3/12 md:3/12 text-sm md:px-4 text-indigo-700 text-center"> <a href="{{ route('comment_detail',['comment'=>$comment->id]) }}"  >{{\Carbon\Carbon::parse($comment->created_at)->format("y/m/d h:i")}}
-                    </a> </td>
-                    <td class="w-2/12 md:2/12 text-sm md:px-4  text-center">{{ $comment->name }}</td>
-                    <td class="w-7/12 md:7/12 text-xs md:px-4  text-center">{{ $comment->comment }}</td>
-
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-
     </div>
 
 

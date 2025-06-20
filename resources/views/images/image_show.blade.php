@@ -37,11 +37,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 bg-white border-b border-gray-200">
                     <div class="text-gray-700 text-sm"> 品番：{{ $image->hinban_id  }}</div>
-                        <div class="text-gray-700 text-sm"> 品名：{{ Str::limit($image->hinban_name,20)  }}</div>
-                        <div class="flex">
-                            <div class="text-gray-700 text-sm ml-0 mr-4"> 想定コスト：{{ ($image->local_cur_price * $ex_rate->ex_rate / 100 * $cost_rate->cost_rate / 100) ?: ''  }}円</div>
-                        </div>
-                        <img class="w-full mx-auto" src="{{ asset('storage/sku_images/'.$image->sku_image) }}">
+                    <div class="text-gray-700 text-sm"> 品名：{{ Str::limit($image->hinban_name,20)  }}</div>
+                    <div class="text-gray-700 text-sm"> col：{{ $image->col_id  }} 　　sz: {{ $image->size_id  }}</div>
+                    <div class="flex">
+                        <div class="text-gray-700 text-sm ml-0 mr-4"> 概算コスト：{{ ($image->local_cur_price * $ex_rate->ex_rate / 100 * $cost_rate->cost_rate / 100) ?: ''  }}円</div>
+                    </div>
+                    <img class="w-full mx-auto" src="{{ asset('storage/sku_images/'.$image->sku_image) }}">
                 </div>
             </div>
         </div>

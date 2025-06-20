@@ -104,6 +104,10 @@ class DataController extends Controller
 
     public function hinban_index(Request $request)
     {
+        $comment_ct = DB::table('comments')
+        ->select('hinban_id', DB::raw('count(*) as total'))
+        ->groupBy('hinban_id')
+        ->get();
         $products=Hinban::with('unit')
         ->where('year_code','LIKE','%'.$request->year_code.'%')
         ->where('brand_id','LIKE','%'.$request->brand_code.'%')
@@ -125,21 +129,30 @@ class DataController extends Controller
         ->orderBy('id','asc')
         ->get();
         // dd($products);
+        dd($comment_ct);
         return view('data.hinban_data',compact('products','years','units','brands'));
     }
 
     public function hinban_index2(Request $request)
     {
+        $comment_ct = DB::table('comments')
+        ->select('hinban_id', DB::raw('count(*) as total'))
+        ->groupBy('hinban_id');
+        // ->get();
+        // dd($comment_ct);
         if($request->order == 'h'){
             $products=DB::table('hinbans')
             ->join('units','hinbans.unit_id','=','units.id')
             ->join('brands','hinbans.brand_id','=','brands.id')
+            ->leftjoinsub($comment_ct, 'comment_counts', function ($join) {
+                $join->on('hinbans.id', '=', 'comment_counts.hinban_id');
+            })
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
             ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
             ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
             ->where('hinbans.year_code','LIKE','%'.$request->hinban_code.'%')
-            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name')
+            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name','hinbans.prod_code','hinbans.season_code','hinbans.kizoku_g','hinbans.seireki_unit','hinbans.kyotu_hinban','units.season_name','comment_counts.total as comment_count')
             ->orderBy('hinbans.id','asc')
             ->paginate(100);
             $years=DB::table('hinbans')
@@ -178,11 +191,14 @@ class DataController extends Controller
             $products=DB::table('hinbans')
             ->join('units','hinbans.unit_id','=','units.id')
             ->join('brands','hinbans.brand_id','=','brands.id')
+            ->leftjoinsub($comment_ct, 'comment_counts', function ($join) {
+                $join->on('hinbans.id', '=', 'comment_counts.hinban_id');
+            })
             ->where('hinbans.year_code','LIKE','%'.$request->year_code.'%')
             ->where('hinbans.brand_id','LIKE','%'.$request->brand_code.'%')
             ->where('hinbans.unit_id','LIKE','%'.$request->unit_code.'%')
             ->where('hinbans.face_code','LIKE','%'.$request->face_code.'%')
-            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name')
+            ->select('hinbans.id as hinban_id','hinbans.year_code','hinbans.brand_id','hinbans.unit_id','hinbans.hinban_name','hinbans.face_code','hinbans.unit_id','brands.brand_name','hinbans.prod_code','hinbans.season_code','hinbans.kizoku_g','hinbans.seireki_unit','hinbans.kyotu_hinban','units.season_name','comment_counts.total as comment_count')
             ->orderBy('hinbans.created_at','desc')
             ->paginate(100);
             $years=DB::table('hinbans')
@@ -371,10 +387,13 @@ class DataController extends Controller
 
     public function hinban_destroy(Request $request)
     {
-        // $Stocks=Hinban::query()->delete();
+        #storage\app\public\sku_imagesにある画像を全削除
+        $files = Storage::disk('public')->files('sku_images');
+        foreach ($files as $file) {
+            Storage::disk('public')->delete($file);
+        }
+        // Hinbanの削除
         DB::table('hinbans')
-        // ->where('hinbans.year_code','>=',($request->year1))
-        // ->where('hinbans.year_code','<=',($request->year2))
         ->delete();
 
         return to_route('data.delete_index')->with(['message'=>'削除されました','status'=>'alert']);

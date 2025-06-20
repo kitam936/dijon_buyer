@@ -7,7 +7,7 @@
 
             <div class="ml-4 flex mt-2 md:mt-0">
                 <div class="ml-0 md:ml-4">
-                    <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >登録済品番リスト</button>
+                    <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品登録Data</button>
                 </div>
 
             </div>
@@ -58,7 +58,7 @@
                     @endforeach
                     </select>
                     <div class="pl-2 mt-0 md:mt-0 md:ml-0 ml-0 ">
-                        <button type="button" class="w-16 h-8 bg-blue-500 text-sm text-white ml-0 hover:bg-blue-600 rounded lg:ml-2 " onclick="location.href='{{ route('image_index') }}'" >全表示</button>
+                        <button type="button" class="w-16 h-8 bg-blue-500 text-sm text-white ml-0 hover:bg-blue-600 rounded lg:ml-2 " onclick="location.href='{{ route('hinban_image_index') }}'" >全表示</button>
                     </div>
                 </div>
                 <div class="mt-0 md:mt-0 ml-4">
@@ -93,9 +93,10 @@
                     <div class="border rounded-md p-0 md:p-0">
                         {{-- <div class="text-gray-700 text-sm"> skuid：{{ $image->sku_id  }}</div> --}}
                         <div class="text-gray-700 text-sm"> 品番：{{ $image->hinban_id  }}</div>
+                        <div class="text-gray-700 text-sm"> col：{{ $image->col_id }} 　sz：{{ $image->size_id }}</div>
                         <div class="text-gray-700 text-sm"> 品名：{{ Str::limit($image->hinban_name,20)  }}</div>
                         <div class="flex">
-                            <div class="text-gray-700 text-sm ml-0 mr-4"> 想定コスト：{{ ($image->local_cur_price * $ex_rate->ex_rate / 100 * $cost_rate->cost_rate / 100) ?: ''  }}円</div>
+                            <div class="text-gray-700 text-sm ml-0 mr-4"> 概算コスト：{{ ($image->local_cur_price * $ex_rate->ex_rate / 100 * $cost_rate->cost_rate / 100) ?: ''  }}円</div>
                         </div>
                         @if(($image->sku_image))
                         <a href="{{ route('hinban_image_show',['id'=>$image->sku_id]) }}">

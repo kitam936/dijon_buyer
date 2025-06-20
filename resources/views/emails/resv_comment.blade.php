@@ -1,6 +1,6 @@
 <p class="mb-4">{{ $user['name']}}　様</p>
 
-<p class="mb-4">店舗Reportに対してコメントが投稿されました。</p>
+<p class="mb-4">商品に対してコメントが投稿されました。</p>
 <br><br>
 
 
@@ -9,8 +9,8 @@
 
 <ul class="mb-4">
     {{-- <li>投稿日：{{ \Carbon\Carbon::parse($comment_info['updated_at'])->format("y/m/d H:i")}}</li> --}}
-    <li>Report_Id：{{ $comment_info['id'] }}</li>
-    <li>店舗名：{{ $comment_info['shop_name'] }}</li>
+    <li>品番：{{ $comment_info['hinban_id'] }}</li>
+    <li>投稿者名：{{ $comment_info['name'] }}</li>
 </ul>
 
 <br>
@@ -19,7 +19,7 @@
 
 アプリで確認をしてください。<br><br>
 
-https://shop.dijon1988.net
+https://buyer-supoort.dijon1988.net
 
 <br><br>
 

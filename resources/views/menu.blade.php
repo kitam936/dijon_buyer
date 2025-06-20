@@ -12,11 +12,11 @@
         <div class="md:flex ">
         <div class="flex ml-8 p-1 text-gray-900  ">
             <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('data.predata_index') }}'" >事前品番Data</button>
-            <button type="button" class="ml-2 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >登録済品番リスト</button>
+            <button type="button" class="ml-2 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品登録</button>
         </div>
 
          <div class="ml-8 md:ml-0 md:flex p-1 text-gray-900  ">
-            <button type="button" class="w-40 h-8 text-center text-sm text-gray-300 bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href=''" >発注</button>
+            <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('order_index') }}'" >発注</button>
             <button type="button" class="ml-1 md:ml-2 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('data.rate_menu') }}'" >Rate</button>
         </div>
         </div>
@@ -35,17 +35,19 @@
 
         <br>
 
+        @if($dl_order)
+        <div class="ml-12 text-ml text-red-500">
+            ※　発注の新着Dataがあります !
+        </div>
+        @endif
+
         <br>
 
         {{-- <h3 class="ml-8 font-semibold text-xl text-indigo-800 leading-tight">
             業務Menu
         </h3> --}}
 
-        {{-- @if($dl_new_order) --}}
-        <div class="ml-12 text-ml text-red-500">
-            ※　発注の新着Dataがあります !
-        </div>
-        {{-- @endif --}}
+
 
 
 

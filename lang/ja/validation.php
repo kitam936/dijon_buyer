@@ -162,6 +162,7 @@ return [
         'vendor_id' => '仕入先コード',
         'vendor_name' => '仕入先名',
         'vendor_info' => '仕入先情報',
+        'pcs'   => '数',
 
     ]
 ];

@@ -103,6 +103,7 @@ Route::middleware('auth')->group(function () {
     Route::get('hinban_create2', [HinbanController::class, 'create2'])->name('hinban_create2');
     Route::POST('hinban_store', [HinbanController::class, 'store'])->name('hinban_store');
     Route::get('hinban_show/{id}', [HinbanController::class, 'show'])->name('hinban_show');
+    Route::get('hinban_show2/{id}', [HinbanController::class, 'show2'])->name('hinban_show2');
     Route::get('hinban_edit/{id}', [HinbanController::class, 'edit'])->name('hinban_edit');
     Route::post('hinban_update/{id}', [HinbanController::class, 'update'])->name('hinban_update');
     Route::delete('hinban_destroy/{id}', [HinbanController::class, 'destroy'])->name('hinban_destroy');
@@ -128,11 +129,13 @@ Route::middleware('auth')->group(function () {
     Route::get('member_edit/{user}', [UserController::class, 'edit'])->name('member_edit');
     Route::get('member_update1/{user}', [UserController::class, 'member_update_rs1'])->name('member_update1');
     Route::post('member_update1/{user}', [UserController::class, 'member_update_rs1'])->name('member_update1');
+
     Route::get('product_index', [ProductController::class, 'index'])->name('product_index');
     Route::get('product_show/{hinban}', [ProductController::class, 'show'])->name('product_show');
     Route::get('product_show0/{hinban}', [ProductController::class, 'show0'])->name('product_show0');
+
     Route::get('comment_detail/{comment}', [CommentController::class, 'comment_detail'])->name('comment_detail');
-    Route::get('comment_create/{report}', [CommentController::class, 'comment_create'])->name('comment_create');
+    Route::get('comment_create/{hinban}', [CommentController::class, 'comment_create'])->name('comment_create');
     Route::post('comment_store', [CommentController::class, 'comment_store'])->name('comment_store');
     Route::get('comment_edit/{comment}', [CommentController::class, 'comment_edit'])->name('comment_edit');
     Route::post('comment_update/{comment}', [CommentController::class, 'comment_update'])->name('comment_update');
@@ -155,13 +158,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('order_result_destroy/{id}', [OrderController::class, 'result_destroy'])->name('order_result_destroy');  ##発注削除
     Route::get('order_csv', [DataDownloadController::class, 'orderCSV_download'])->name('order_csv');
     Route::get('order_csv_all', [DataDownloadController::class, 'orderCSV_download_all'])->name('order_csv_all');//一括ダウンロード
-    Route::get('order_csv_shop', [DataDownloadController::class, 'orderCSV_download_shop'])->name('order_csv_shop');//一括ダウンロード
-    Route::get('order_csv_ws', [DataDownloadController::class, 'orderCSV_download_ws'])->name('order_csv_ws');//一括ダウンロード
-    Route::get('image_index', [ImageController::class, 'image_index'])->name('image_index');
-    Route::get('image_show/{hinban}', [ImageController::class, 'image_show'])->name('image_show');
-    Route::get('image_show2/{hinban}', [ImageController::class, 'image_show2'])->name('image_show2');
-    Route::get('sku_image_index', [ImageController::class, 'sku_image_index'])->name('sku_image_index');
-    Route::get('sku_image_show/{sku}', [ImageController::class, 'sku_image_show'])->name('sku_image_show');
+    Route::get('order_image_list', [OrderController::class, 'order_image_list'])->name('order_image_list');
+
+    // Route::get('image_index', [ImageController::class, 'image_index'])->name('image_index');
+    // Route::get('image_show/{hinban}', [ImageController::class, 'image_show'])->name('image_show');
+    // Route::get('image_show2/{hinban}', [ImageController::class, 'image_show2'])->name('image_show2');
+    // Route::get('sku_image_index', [ImageController::class, 'sku_image_index'])->name('sku_image_index');
+    // Route::get('sku_image_show/{sku}', [ImageController::class, 'sku_image_show'])->name('sku_image_show');
 
     Route::get('vendor_index', [VendorController::class, 'index'])->name('vendor_index');
     Route::get('vendor_show/{id}', [VendorController::class, 'show'])->name('vendor_show');
