@@ -22,7 +22,7 @@
             <div class="ml-2 mb-0">
                 <button type="button" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded " onclick="location.href='{{ route('hinban_edit',['id'=>$product->hinban_id]) }}'" >編集</button>
             </div>
-            <div class="ml-2 mb-2 md:mb-0">
+            <div class="ml-6 mb-2 md:mb-0">
                 <button type="button" onclick="location.href='{{ route('comment_create',['hinban'=>$product->hinban_id]) }}'" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">コメント登録</button>
             </div>
             {{-- <div class="ml-4 mb-0">

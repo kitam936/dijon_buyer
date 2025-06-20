@@ -316,6 +316,7 @@ class OrderController extends Controller
 
         ]);
 
+        // トランザクション開始
         DB::beginTransaction();
 
         try {
@@ -348,27 +349,25 @@ class OrderController extends Controller
         }
 
         // ここでメール送信（非同期）
-        // $users = User::where('mailService', 1)
-        //     ->where('shop_id', 101)
-        //     ->get()
-        //     ->toArray();
+        $users = User::where('mailService', 1)
+            ->get()
+            ->toArray();
 
-        // $order_info = Order::where('orders.id', $order->id)
-        //     ->join('shops', 'shops.id', 'orders.shop_id')
-        //     ->join('users', 'users.id', 'orders.user_id')
-        //     ->select(
-        //         'orders.id as order_id',
-        //         'users.name',
-        //         'users.email',
-        //         'orders.shop_id',
-        //         'shops.shop_name'
-        //     )
-        //     ->first()
-        //     ->toArray();
+        $order_info = Order::where('orders.id', $order->id)
+            ->join('users', 'users.id', 'orders.user_id')
+            ->select(
+                'orders.id as order_id',
+                'users.name',
+                'users.email',
+                'orders.created_at',
+            )
+            ->first()
+            ->toArray();
 
-        // foreach ($users as $user) {
-        //     SendOrderResvMail::dispatch($order_info, $user);
-        // }
+        foreach ($users as $user) {
+            // dd($user, $order_info);
+            SendResvOrderMail::dispatch($user,$order_info);
+        }
 
         return redirect()->route('order_index')->with(['message' => '発注が確定しました', 'status' => 'info']);
     }

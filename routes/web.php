@@ -167,12 +167,14 @@ Route::middleware('auth')->group(function () {
     // Route::get('sku_image_show/{sku}', [ImageController::class, 'sku_image_show'])->name('sku_image_show');
 
     Route::get('vendor_index', [VendorController::class, 'index'])->name('vendor_index');
-    Route::get('vendor_show/{id}', [VendorController::class, 'show'])->name('vendor_show');
     Route::get('vendor_create', [VendorController::class, 'create'])->name('vendor_create');
     Route::post('vendor_store', [VendorController::class, 'vendor_store'])->name('vendor_store');
     Route::get('vendor_edit/{id}', [VendorController::class, 'edit'])->name('vendor_edit');
     Route::put('vendor_update/{id}', [VendorController::class, 'update'])->name('vendor_update');
     Route::delete('vendor_destroy/{id}', [VendorController::class, 'destroy'])->name('vendor_destroy');
+
+    Route::get('image_images', [ImageController::class, 'index'])->name('images_index');
+    Route::post('images_download', [ImageController::class, 'download'])->name('images_download');
 
 });
 

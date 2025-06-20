@@ -6,10 +6,9 @@
 
 <ul class="mb-4">
     {{-- <li>更新日：{{ \Carbon\Carbon::parse($report_info['updated_at'])->format("y/m/d H:i") }}</li> --}}
-    <li>品番：{{ $order_info['hinban_id'] }}</li>
-    <li>品名：{{ $order_info['hinban_name'] }}</li>
-    <li>登録者名：{{ $order_info['name'] }}</li>
-</ul>
+    <li>品番：{{ $hinban_info['id'] }}</li>
+    <li>品名：{{ $hinban_info['hinban_name'] }}</li>
+
 
 <br>
 

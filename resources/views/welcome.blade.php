@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Dijon_Buyer</title>
+        <title>Buyer-Support</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -47,19 +47,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                         <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
                             <div>
-                                <h2 class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">Dijon_Buyer</h2>
+                                <h2 class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">Buyer-Support</h2>
 
-                                {{-- <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                                    Dijonのshop間の情報共有・交換を目的としたサイトです。<br><br>
+                                <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                                    Dijonの外部仕入れ業務の支援を目的としたサイトです。<br><br>
 
                                     このサイトでは下記のことができます。<br>
-                                    ①店別の売上（年度・月別・週別・日別）<br>　および在庫の各種データ確認（SKU単位）<br>
-                                    ②商品別の売上・在庫データ確認<br>
-                                    ③店舗レポートの投稿およびそれに対するコメント投稿<br>（更新時には新着メールが届きます）<br>
-                                    ④商品詳細確認<br>
-                                    ⑤追加発注<br>
-                                    ⑥追加オーダーのcsvダウンロード（本部スタッフ）<br><br>
-                                </p> --}}
+                                    ①事前品番Dataのアップロード<br>
+                                    ②現地での商品登録および発注（更新時には新着メールが届きます）<br>
+                                    ③商品に対するコメントの投稿（更新時には新着メールが届きます）<br>
+                                    ④発注書作成シート用Dataのcsvダウンロード<br>
+
+                                </p>
                             </div>
                         </div>
 
@@ -73,7 +72,7 @@
 
                                     　パスワードを忘れた場合　および<br>
                                     　このサイトに関する問い合わせは<br>
-                                    <span  class="text-indigo-800 items-center"><a href="mailto:buyer@dijon1988.net">　buyer@dijon1988.net　</a></span> までお願いします。<br>
+                                    <span  class="text-indigo-800 items-center"><a href="mailto:buyer-support@dijon1988.net">　buyer-support@dijon1988.net　</a></span> までお願いします。<br>
                                 </p>
                             </div>
                         </div>

@@ -401,7 +401,7 @@ class HinbanController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->file('image1') );
+        // dd($request );
 
         $request->validate([
             // 'vendor_id2' => 'required',
@@ -456,6 +456,7 @@ class HinbanController extends Controller
         ->join('units','pre_data.unit_id','=','units.id')
         ->where('hinban_id',$hinban)
         ->first();
+
 
 
 
@@ -801,20 +802,24 @@ class HinbanController extends Controller
         }
 
 
-        // $users = User::Where('mailService', 1)
-        // ->distinct()
+        $users = User::Where('mailService', 1)
+        ->distinct()
+        ->get()
+        ->toArray();
 
-        // ->get()
-        // ->toArray();
+        $hinban_info = Hinban::findOrFail($request['hinban_id2'])
+        // ->first()
+        ->toArray();
 
-        // $touroku = Hinban::findOrFail($request['hinban_id2'])
-        // ->toArray();
+        // dd($users,$hinban_info);
+
+        foreach($users as $user){
+            // $user = $user['user'];
+            // dd($user,$hinban_info);
+            SendCreateHinbanMail::dispatch($user,$hinban_info);
+        }
 
 
-        // foreach($users as $user){
-        //     $user = $user['user'];
-        //     SendStintMail::dispatch($touroku,$user);
-        // }
 
         // return to_route('hinban.hinban_index2')->with(['message'=>'品番が登録されました','status'=>'info']);
         return to_route('hinban_create')->with(['message'=>'品番が登録されました','status'=>'info']);

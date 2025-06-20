@@ -9,8 +9,12 @@
 
 <ul class="mb-4">
     {{-- <li>投稿日：{{ \Carbon\Carbon::parse($comment_info['updated_at'])->format("y/m/d H:i")}}</li> --}}
-    <li>品番：{{ $comment_info['hinban_id'] }}</li>
-    <li>投稿者名：{{ $comment_info['name'] }}</li>
+    <li>投稿日：{{ \Carbon\Carbon::parse($comment_info['created_at'])->format("y/m/d H:i")}}</li>
+    <li>品番：{{ $comment_info['id'] }}</li>
+    <li>品名：{{ $comment_info['hinban_name'] }}</li>
+    <li>コメント：{{ $comment_info['comment'] }}</li>
+    <li>投稿者：{{ $comment_info['name'] }}</li>
+
 </ul>
 
 <br>

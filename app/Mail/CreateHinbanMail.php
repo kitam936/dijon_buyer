@@ -12,13 +12,13 @@ use Illuminate\Queue\SerializesModels;
 class CreateHinbanMail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $user;
+    public $hinban_info;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public function __construct($user,$hinban_info)
     {
-        //
+        $this->user = $user;
+        $this->hinban_info = $hinban_info;
     }
 
     /**
@@ -27,7 +27,7 @@ class CreateHinbanMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Create Hinban Mail',
+            subject: '商品が登録されました',
         );
     }
 
@@ -37,7 +37,7 @@ class CreateHinbanMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.create_hinban',
         );
     }
 

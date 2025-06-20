@@ -10,6 +10,10 @@
                     <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品登録Data</button>
                 </div>
 
+                <div class="ml-0 md:ml-4">
+                    <button type="button" class="w-40 h-8 text-center text-sm text-white bg-blue-500 border-0 py-1 px-2 focus:outline-none hover:bg-blue-700 rounded " onclick="location.href='{{ route('images_index') }}'" >画像DL</button>
+                </div>
+
             </div>
         </div>
 
