@@ -13,12 +13,13 @@ class ResvOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $user;
+    public $order_info;
+
+    public function __construct($user,$order_info)
     {
-        //
+        $this->order_info = $order_info;
+        $this->user = $user;
     }
 
     /**
@@ -27,7 +28,7 @@ class ResvOrderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Resv Order Mail',
+            subject: '発注Dataが登録されました',
         );
     }
 
@@ -37,7 +38,7 @@ class ResvOrderMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.resv_order',
         );
     }
 

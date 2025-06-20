@@ -13,12 +13,13 @@ class ResvCommentMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $user;
+    public $comment_info;
+
+    public function __construct($user,$comment_info)
     {
-        //
+        $this->comment_info = $comment_info;
+        $this->user = $user;
     }
 
     /**
@@ -27,7 +28,7 @@ class ResvCommentMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Resv Comment Mail',
+            subject: 'コメントが登録されました',
         );
     }
 
@@ -37,7 +38,7 @@ class ResvCommentMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.resv_comment',
         );
     }
 

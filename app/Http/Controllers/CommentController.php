@@ -35,7 +35,11 @@ class CommentController extends Controller
         $login_user = User::findOrFail(Auth::id());
         $hinban_id = $request->hinban_id2;
 
-        // dd($request->report_id2,$login_user->id,$request->report_id2,$request->comment);
+        // dd($hinban_id,$request->comment);
+
+        #MailTest
+
+
         Comment::create([
             'user_id' => $login_user->id,
             'hinban_id' => $request->hinban_id2,
@@ -43,21 +47,25 @@ class CommentController extends Controller
         ]);
 
         // ここでメール送信
-        // $users = User::Where('mailService','=',1)
-        // ->get()
-        // ->toArray();
+        $users = User::Where('mailService','=',1)
+        ->get()
+        ->toArray();
 
-        // $comment_info = Hinban::Where('hinbans.id','=',$request->hinban_id2)
-        // ->distinct()
-        // ->select('hinbans.id','hinban_name')
-        // ->get()
-        // ->toArray();
+        $comment_info = Comment::Where('comments.hinban_id','=',$hinban_id)
+        ->distinct()
+        ->join('users','users.id','=','comments.user_id')
+        ->join('hinbans','hinbans.id','=','comments.hinban_id')
+        ->select('hinbans.id','hinban_name','users.name','users.email','comments.comment','comments.created_at')
+        ->orderBy('comments.created_at', 'desc') // 明示的にcommentsテーブルのcreated_atを指定
+        ->get()
+        ->toArray();
 
-        // $comment_info = $comment_info[0];
+        $comment_info = $comment_info[0];
 
-        // foreach($users as $user){
-        //     SendCommentMail::dispatch($comment_info,$user);
-        // }
+        foreach($users as $user){
+            // dd($user,$comment_info);
+            SendResvCommentMail::dispatch($user,$comment_info);
+        }
 
         return to_route('hinban_show',['id'=>$hinban_id])->with(['message'=>'コメントが登録されました','status'=>'info']);
     }
