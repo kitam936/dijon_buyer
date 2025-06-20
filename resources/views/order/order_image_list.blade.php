@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
 
             <div>
-            商品登録Data
+            発注済画像リスト
             </div>
         </h2>
         <div class="md:flex">
@@ -12,25 +12,18 @@
             <div class="w-40 ml-4 mt-4 text-sm items-right mb-0">
                 <button onclick="location.href='{{ route('menu') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded">Menu</button>
             </div>
-            <div class="w-40 ml-4 mt-4 text-sm items-right mb-0">
-                <button onclick="location.href='{{ route('hinban_image_index') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded">画像リスト</button>
+            <div class="ml-2 mt-4 md:ml-2 md:mt-4">
+                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('order_index') }}'" >発注Data</button>
             </div>
             </div>
-            <div class="flex">
-            <div class="w-40 md:ml-4 ml-4 mt-4 text-sm items-right mb-0">
-                <button onclick="location.href='{{ route('hinban_create') }}'" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">新規登録</button>
-            </div>
-            <div class="pl-2 ml-2 mt-4 md:ml-2 md:mt-4">
-                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded " onclick="location.href='{{ route('cart_create') }}'" >オーダー画面へ</button>
-            </div>
-            </div>
+
         </div>
 
 
         <x-flash-message status="session('status')"/>
 
 
-        <form method="get" action="{{ route('hinban.hinban_index2')}}" class="mt-4">
+        <form method="get" action="{{ route('order_image_list')}}" class="mt-4">
             <div class="lg:flex">
                 <div class="md:flex">
                     <label for="year_code" class="items-center text-sm mt-2" >年CD：</label>
@@ -54,7 +47,7 @@
                         <select class="w-24 h-8 text-sm pt-1 mr-4 mb-2 border rounded" id="unit_code" name="unit_code" type="number" >
                         <option value="" @if(\Request::get('unit_code') == '0') selected @endif >指定なし</option>
                         @foreach ($units as $unit)
-                            <option value="{{ $unit->unit_id }}" @if(\Request::get('unit_code') == $unit->unit_id ) selected @endif >{{ $unit->unit_id  }}</option>
+                            <option value="{{ $unit->id }}" @if(\Request::get('unit_code') == $unit->id ) selected @endif >{{ $unit->id  }}</option>
                         @endforeach
                         </select>
                     </div>
@@ -69,7 +62,7 @@
                     </div>
 
                 <div>
-                    <button type="button" class="w-20 h-8 bg-blue-300 text-white ml-2 hover:bg-indigo-600 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" class="mb-2 ml-2 text-right text-black bg-indigo-300 border-0 py-0 px-2 focus:outline-none hover:bg-indigo-300 rounded ">全表示</button>
+                    <button type="button" class="w-20 h-8 bg-blue-300 text-white ml-2 hover:bg-indigo-600 rounded " onclick="location.href='{{ route('order_image_list') }}'" class="mb-2 ml-2 text-right text-black bg-indigo-300 border-0 py-0 px-2 focus:outline-none hover:bg-indigo-300 rounded ">全表示</button>
                 </div>
                 </div>
                 <div class="md:ml-4">
@@ -90,43 +83,48 @@
             <table class="md:w-2/3 bg-white table-auto w-full text-center whitespace-no-wrap">
                <thead>
                     <tr>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">年</th>
                         <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">BR</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">UNIT</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Face</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品番</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品名</th>
-                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">ｺﾒﾝﾄ数</th>
-                        @if(Auth::user()->role_id <= 3)
-                        <th class="w-3/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">削除</th>
-                        @endif
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Unit/Face</th>
+                        <th class="w-1/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">SKU</th>
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">品名</th>
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">現地コスト</th>
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">概算コスト</th>
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">数</th>
+                        <th class="w-2/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">画像</th>
+
                         {{-- <th class="w-3/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">元売価</th> --}}
                         {{-- <th class="w-3/15 md:px-4 py-1 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">現売価</th> --}}
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach ($products as $product)
+                    @foreach ($orders as $order)
                     <tr>
-                        <td class="w-1/15 md:px-4 py-1"> {{ $product->year_code }} </td>
-                        <td class="w-1/15 md:px-4 py-1">{{ $product->brand_name }}</td>
-                        <td class="w-1/15 md:px-4 py-1"> {{ $product->unit_id }}</td>
-                        <td class="w-1/15 md:px-4 py-1"> {{ $product->face_code }}</td>
-                        {{-- <td class="w-2/15 md:px-4 py-1"> {{ $product->hinban_id }}</td> --}}
-                        <td class="w-2/15 md:px-4 py-1"> <a href="{{ route('hinban_show',['id'=>$product->hinban_id]) }}" class=" text-indigo-600 ml-2 rounded"  >{{ $product->hinban_id }}</a></td>
-                        <td class="w-4/15 md:px-4 py-1 text-left">{{ $product->hinban_name }}</td>
-                        <td class="w-1/15 md:px-4 py-1 text-center">{{ $product->comment_count }}</td>
-                        @if(Auth::user()->role_id <= 3)
-                        <td class="w-1/15 md:px-4 py-1 text-center">
-                            <form action="{{ route('hinban_destroy_one', ['id'=>$product->hinban_id]) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="w-16 border rounded bg-red-500 text-white hover:bg-red-600">削除</button>
-                            </form>
+                        {{-- <td class="w-1/15 md:px-4 py-1"> {{ $order->year_code }} </td> --}}
+                        <td class="w-1/15 md:px-4 py-1">{{ $order->brand_name }}</td>
+                        <td class="w-1/15 md:px-4 py-1"> <span style="font-variant-numeric:tabular-nums">{{ $order->unit_id }}-{{ $order->face_code }}</span></td>
+                        {{-- <td class="w-1/15 md:px-4 py-1"> {{ $order->face_code }}</td> --}}
+                        {{-- <td class="w-2/15 md:px-4 py-1"> {{ $order->hinban_id }}</td> --}}
+                        <td class="w-2/15 md:px-4 py-1"> <a href="{{ route('hinban_show2',['id'=>$order->hinban_id]) }}" class=" text-indigo-600 ml-2 rounded"  >{{ $order->hinban_id }}-{{ $order->col_id }}-{{ $order->size_id }}</a></td>
+                        <td class="w-3/15 md:px-4 py-1 text-left">{{ $order->hinban_name }}</td>
+                        <td class="w-2/12 md:2/12 text-sm md:px-4 py-1 text-right">{{ number_format($order->local_cur_price) }}</td>
+                        <td class="w-2/12 md:2/12 text-sm md:px-4 py-1 text-right">{{ number_format($order->expected_price) }}</td>
+                        <td class="w-2/12 md:1/12 text-sm md:px-4 py-1 text-right">{{ number_format($order->pcs) }}</td>
+                        <td class="w-2/12 md:2/12 text-sm md:px-4 py-1 items-center">
+                            <div class="w-full ">
+                                {{-- <x-sku3_image-thumbnail :filename="$order->sku_image"  /> --}}
+                                @if(($order->sku_image))
+                                <a href="{{ route('hinban_image_show',['id'=>$order->sku_id]) }}">
+                                    <x-sku3_image-thumbnail :filename="$order->sku_image"  />
+                                </a>
+                                @endif
+                                @if(!($order->sku_image))
+                                <x-sku3_image-thumbnail :filename="$order->sku_image"  />
+                                @endif
+                            </div>
                         </td>
-                    @endif
-                        {{-- <td class="w-1/15 md:px-4 py-1 text-right">{{ number_format($product->local_cur_price )}}</td> --}}
-                        {{-- <td class="w-1/15 md:px-4 py-1 text-right">{{ number_format($product->local_yen_price )}}</td> --}}
+                        {{-- <td class="w-1/15 md:px-4 py-1 text-right">{{ number_format($order->local_cur_price )}}</td> --}}
+                        {{-- <td class="w-1/15 md:px-4 py-1 text-right">{{ number_format($order->local_yen_price )}}</td> --}}
 
                     </tr>
                     @endforeach
@@ -134,7 +132,7 @@
                 </tbody>
 
             </table>
-            {{  $products->links()}}
+            {{  $orders->links()}}
         </div>
     </div>
 

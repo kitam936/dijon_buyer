@@ -8,7 +8,7 @@
 
         <div class="flex mt-4">
         <div class="ml-2 md:ml-4">
-            <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >商品</button>
+            <button type="button" class="ml-2 mb-4 h-8 w-40 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban_show',['id'=>$prod->hinban_id]) }}'" >商品詳細</button>
         </div>
 
         </div>
@@ -47,14 +47,14 @@
 
                 <div class="pl-0 mt-0 ml-2">
                     {{-- <x-label for="vendor_id2" value="Vendor" /> --}}
-                    <input type="hidden" readonly class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="vendor_id" value="{{ $prod->vendor_id }}"></input>
+                    {{-- <input type="hidden" readonly class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="vendor_id" value="{{ $prod->vendor_id }}"></input> --}}
                 </div>
                 <div class="md:flex">
                     <div class="ml-0 mb-2 flex md:mb-4">
                         <div>
                             <input type="hidden" id="user_id" name="user_id" value="{{ Auth::User()->id }}" />
                         </div>
-                        <div class="relative ml-2 mr-0">
+                        {{-- <div class="relative ml-2 mr-0">
                             <x-label for="vendor_id" value="仕入先" />
                             <select  id="vendor_id" name="vendor_id"  class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
                                 <option value="{{ $prod->vendor_id }}" @if(\Request::get('vendor_id') == '0') selected  @endif >{{ $prod->vendor_name }}</option>
@@ -62,7 +62,7 @@
                                     <option value="{{ $vendor->id }}" @if(\Request::get('vendor_id') == $vendor->id) selected @endif>{{ $vendor->id }}={{ $vendor->vendor_name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="pl-0 mt-0 ml-2">
                             <x-label for="prod_code" value="先方品番" />
                             <input class="w-40 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="prod_code" value="{{ $prod->prod_code }}"></input>
@@ -292,11 +292,11 @@
                         </select>
                         <div class="pl-0 mt-0 md:mt-0 ml-2 ">
                             {{-- <x-label for="length" value=" 着丈1" /> --}}
-                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="着丈"  name="length1" value="{{ $prod_sku6->length }}"></input>
+                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="着丈"  name="length6" value="{{ $prod_sku6->length }}"></input>
                         </div>
                         <div class="pl-0 mt-0 md:mt-0 ml-2 ">
                             {{-- <x-label for="width" value="身幅" /> --}}
-                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="身幅"  name="width1" value="{{ $prod_sku6->width}}"></input>
+                            <input class="w-20 h-10 bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="身幅"  name="width6" value="{{ $prod_sku6->width}}"></input>
                         </div>
                         </div>
                         <input type="file" id="image6" name="image6" accept=“image/png,image/jpeg,image/jpg” class="w-100 md:ml-2 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -310,38 +310,38 @@
                     <div class="relative flex">
 
                         @if($prod_sku1->sku_image)
-                        <div class="w-80 ml-2">
+                        <div class="w-32 ml-2">
                             <x-sku_image-thumbnail :filename="$prod_sku1->sku_image" />
                             <span class="text-sm text-center">SKU1</span>
                         </div>
                         @endif
                         @if($prod_sku2->sku_image)
-                        <div class="w-80 ml-2">
+                        <div class="w-32 ml-2">
                             <x-sku_image-thumbnail :filename="$prod_sku2->sku_image" />
                             <span class="text-sm text-center">SKU2</span>
                         </div>
                         @endif
 
                         @if($prod_sku3->sku_image)
-                        <div class="w-80 ml-2">
+                        <div class="w-32 ml-2">
                             <x-sku_image-thumbnail :filename="$prod_sku3->sku_image" />
                             <span class="text-sm text-center">SKU3</span>
                         </div>
                         @endif
                         @if($prod_sku4->sku_image)
-                        <div class="w-80 ml-2">
+                        <div class="w-32 ml-2">
                             <x-sku_image-thumbnail :filename="$prod_sku4->sku_image" />
                             <span class="text-sm text-center">SKU4</span>
                         </div>
                         @endif
                         @if($prod_sku5->sku_image)
-                        <div class="w-80 ml-2">
+                        <div class="w-32 ml-2">
                             <x-sku_image-thumbnail :filename="$prod_sku5->sku_image" />
                             <span class="text-sm text-center">SKU5</span>
                         </div>
                         @endif
                         @if($prod_sku6->sku_image)
-                        <div class="w-80 ml-2">
+                        <div class="w-32 ml-2">
                             <x-sku_image-thumbnail :filename="$prod_sku6->sku_image" />
                             <span class="text-sm text-center">SKU6</span>
                         </div>

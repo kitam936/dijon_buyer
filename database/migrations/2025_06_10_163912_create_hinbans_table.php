@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('kizoku_g');
             $table->integer('seireki_unit');
             $table->integer('kyotu_hinban');
-            $table->integer( 'vendor_id');
+            // $table->integer( 'vendor_id')->nullable();
             $table->timestamps();
         });
     }

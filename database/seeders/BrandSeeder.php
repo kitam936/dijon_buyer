@@ -16,13 +16,13 @@ class BrandSeeder extends Seeder
         DB::table('brands')->insert([
             [
                 'id' => 1,
-                'brand_name' => 'TBIS',
+                'brand_name' => '1Tbis',
                 'brand_info' => 'TBIS',
                 'kizoku_g' => 110,
             ],
             [
                 'id' => 7,
-                'brand_name' => 'notorico',
+                'brand_name' => '7notorico',
                 'brand_info' => 'notorico',
                 'kizoku_g' => 710,
             ],

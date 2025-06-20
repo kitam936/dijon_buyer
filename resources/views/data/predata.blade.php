@@ -2,24 +2,25 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <div class="">
+
             <div>
             事前品番データ
             </div>
-            <div class="flex mt-4">
+        </h2>
+        <div class="flex mt-4">
             <div class="w-40 ml-8 mt-4 text-sm items-right mb-0">
                 <button onclick="location.href='{{ route('menu') }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">Menu</button>
             </div>
             <div class="ml-2 mt-4 md:ml-4">
             <button type="button" class="ml-2 mb-4 w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-600 rounded " onclick="location.href='{{ route('data.predata_create') }}'" >新規追加</button>
             </div>
-            </div>
-            </div>
-        </h2>
+        </div>
+
+
 
         <x-flash-message status="session('status')"/>
 
-        <form method="get" action="{{ route('data.predata_index')}}" class="mt-4">
+        <form method="get" action="{{ route('data.predata_index')}}" class="mt-4 ml-4">
             <div class="lg:flex">
                 <div class="md:flex">
                     <label for="year_code" class="items-center text-sm mt-2" >年CD：</label>

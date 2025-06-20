@@ -85,12 +85,12 @@
 
                         <div class="flex mt-2">
 
-                            <form method="POST" action="{{ route('data.sku_destroy') }}" class=" ml-0 p-1 items-right " >
+                            {{-- <form method="POST" action="{{ route('data.sku_destroy') }}" class=" ml-0 p-1 items-right " >
                                 @csrf
                                 @method('delete')
 
                                 <button type="submit" class="text-sm 0 w-32 text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded">SKUデータ削除</button>
-                            </form>
+                            </form> --}}
 
                             <form method="POST" action="{{ route('data.hinban_destroy') }}" class=" ml-0 p-1 items-right " >
                                 @csrf

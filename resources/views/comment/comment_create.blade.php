@@ -8,10 +8,10 @@
             </h2>
             <div class="flex">
             <div class="ml-10 mb-2">
-                <button type="button" class="w-32 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('report_list') }}'" >Report一覧</button>
+                <button type="button" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded " onclick="location.href='{{ route('hinban.hinban_index2') }}'" >登録品番Data</button>
             </div>
             <div class="ml-4 mb-2">
-                <button type="button" onclick="location.href='{{ route('report_detail',['report'=>$report->id]) }}'" class="w-32 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">Report詳細</button>
+                <button type="button" onclick="location.href='{{ route('hinban_show',['id'=>$hinban->id]) }}'" class="w-40 h-8 text-center text-sm text-white bg-indigo-500 border-0 py-1 px-2 focus:outline-none hover:bg-indigo-700 rounded ">商品詳細</button>
             </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
                                 {{-- </div> --}}
 
                                 <div class="flex pl-0 mt-0">
-                                    <input type="" class="pl-0  ml-0 md:ml-2 w-32 h-6 items-center bg-gray-100 border rounded" name="report_id2"  value="{{ $report->id }}"/>
-                                    <input type="hidden" class="pl-0  ml-0 md:ml-2 w-32 h-6 items-center bg-gray-100 border rounded" name="user_id2"  value="{{ $login_user->id }}"/>
+                                    <input type="" class="pl-0  ml-0 md:ml-2 w-40 h-8 items-center bg-gray-100 border rounded" name="hinban_id2"  value="{{ $hinban->id }}"/>
+                                    <input type="hidden" class="pl-0  ml-0 md:ml-2 w-40 h-8 items-center bg-gray-100 border rounded" name="user_id2"  value="{{ $login_user->id }}"/>
                                 </div>
 
                         </div>
@@ -54,7 +54,7 @@
 
                         <div class="p-2 w-full mt-4 flex justify-around">
 
-                            <button type="submit" class="w-32 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">登録</button>
+                            <button type="submit" class="w-40 h-8 text-center text-sm text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-700 rounded ">登録</button>
                         </div>
                         </div>
                     </div>

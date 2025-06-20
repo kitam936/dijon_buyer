@@ -46,21 +46,86 @@ class DataDownloadController extends Controller
     // 成功したコード
     public function orderCSV_download(Request $request)
     {
-        $orders = DB::table('orders')
-        ->join('order_items','order_items.order_id','=','orders.id')
-        ->join('shops','shops.id','=','orders.shop_id')
-        ->join('skus','skus.id','=','order_items.sku_id')
-        ->join('hinbans','hinbans.id','=','skus.hinban_id')
-        ->where('orders.id',$request->id2)
-        ->selectRaw('orders.shop_id ,skus.hinban_id,skus.col_id,skus.size_id,hinbans.m_price,FLOOR(hinbans.m_price * shops.rate /1000) as gedai,order_items.pcs')
-        ->distinct()
-        // ->groupBy('my_karts.maker_id')
-        // ->orderBy('order_items.sku_id')
-        ->get();
 
-        // dd($request->order,$orders[0]);
+        // dd($dl_order);
+        $dl_order = DB::table('orders')
+        ->join('order_items','order_items.order_id','=','orders.id')
+        ->join('skus','skus.id','=','order_items.sku_id')
+        ->where('orders.order_status',1)
+        ->where('orders.id',$request->id2)
+        ->groupBy('skus.hinban_id')
+        ->select('skus.hinban_id');
+        // ->get();
+
+        // dd($dl_order);
+
+        $order_sku = DB::table('orders')
+        ->join('order_items','order_items.order_id','=','orders.id')
+        ->where('orders.order_status',1)
+        ->where('orders.id',$request->id2)
+        ->groupBy('order_items.sku_id','orders.vendor_id','order_items.expected_price')
+        ->selectRaw('order_items.sku_id,orders.vendor_id,order_items.expected_price,sum(order_items.order_pcs) as pcs');
+        // ->get();
+
+        // dd($order_sku);
+
+        $orders = DB::table('skus')
+        ->join('hinbans','hinbans.id','=','skus.hinban_id')
+        ->joinsub($dl_order, 'dl_order', function ($join) {
+            $join->on('dl_order.hinban_id', '=', 'skus.hinban_id');
+        })
+        ->leftjoinSub($order_sku, 'orders', 'orders.sku_id', '=', 'skus.id')
+        ->join('brands','brands.id','=','hinbans.brand_id')
+        ->join('units','units.id','=','hinbans.unit_id')
+        ->join('faces','faces.face_code','=','hinbans.face_code')
+        // ->where('orders.id',$request->id2)
+        ->selectRaw('
+            skus.id,
+            orders.vendor_id as factory,
+            orders.vendor_id  as vendor,
+            "" as kijihinban,
+            hinbans.prod_code as kijimei,
+            skus.hinban_id,hinbans.hinban_name,
+            "" as tenkaibi,
+            units.season_name,
+            hinbans.year_code,
+            hinbans.shohin_gun,
+            hinbans.kizoku_g,
+            hinbans.unit_id,
+            hinbans.face_code,
+            "" as face2,
+            faces.face_item,
+            "" as nouki,
+            orders.pcs ,
+            skus.col_id,
+            skus.size_id,
+            orders.expected_price as cost ,
+            "" as jodai,"" as shiharai,
+            brands.brand_name,
+            hinbans.mix_rate,
+            skus.length,
+            skus.width,
+            hinbans.seireki_unit,
+            hinbans.kyotu_hinban,
+            "" as hachuubi,
+            "9" as desiginer ')
+            ->orderBy('skus.id')
+            ->distinct()
+            // ->groupBy('my_karts.maker_id')
+            // ->orderBy('order_items.sku_id')
+            ->get();
+
+        // dd($orders);
         $csvHeader = [
-            'shop_id' ,'hinban_id','col_id','size_id','m_price','gedai','pcs'];
+            'sku_id',
+            'factory' ,'vendor','kiji-hinban','kiji-name',
+            'hinban','hinnmei','tenkaibi','season',
+            'year','shohin-gun','kizoku','ACT','FACE1','FACE2',
+            'item','nouki','pcs','col','SZ',
+            'cost','jodai','shiharai','brand','mix_rate',
+            'length','width','seireki_-unit','kyotu-hinban','hachubi','designer',
+            // 'sku_id'
+        ];
 
         $csvData = $orders->toArray();
 
@@ -79,59 +144,123 @@ class DataDownloadController extends Controller
             fclose($handle);
         });
 
+        $timestamp = date('ymd_His');
+
         $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment; filename="orders.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="発注Data_' . $timestamp . '.csv"');
 
         // Status変更
-        $order=Order::findOrFail($request->id2);
-        $order->status = 3;
-        $order->save();
+
+        $orders=Order::where('order_status',1)
+        ->get();
+        // dd($orders);
+        foreach ($orders as $order) {
+            $order->order_status = 5;
+            $order->save();
+        }
+
 
         // Status変更Mail
 
-        $users = Order::Where('orders.id',$request->id2)
-        ->join('users','users.id','orders.user_id')
-        ->where('mailService','=',1)
-        ->select('orders.user_id','users.name','users.email')
-        ->get()
-        ->toArray();
+        // $users = Order::Where('orders.id',$request->id2)
+        // ->join('users','users.id','orders.user_id')
+        // ->where('mailService','=',1)
+        // ->select('orders.user_id','users.name','users.email')
+        // ->get()
+        // ->toArray();
 
+        // $order_info = Order::Where('orders.id',$request->id2)
+        // ->join('shops','shops.id','orders.shop_id')
+        // ->join('users','users.id','orders.user_id')
+        // ->select('orders.id as order_id','users.name','users.email','orders.shop_id','shops.shop_name')
+        // ->first()
+        // ->toArray();
 
-        $order_info = Order::Where('orders.id',$request->id2)
-        ->join('shops','shops.id','orders.shop_id')
-        ->join('users','users.id','orders.user_id')
-        ->select('orders.id as order_id','users.name','users.email','orders.shop_id','shops.shop_name')
-        ->first()
-        ->toArray();
-
-        // dd($users,$order_info);
-
-        foreach($users as $user){
-
-            // dd($request,$user,$order_info);
-            SendOrderResponseMail::dispatch($order_info,$user);
-        }
+        // foreach($users as $user){
+        //     SendOrderResponseMail::dispatch($order_info,$user);
+        // }
 
         return $response;
     }
 
     public function orderCSV_download_all()
     {
-        $orders = DB::table('orders')
+        $dl_order = DB::table('orders')
         ->join('order_items','order_items.order_id','=','orders.id')
-        ->join('shops','shops.id','=','orders.shop_id')
         ->join('skus','skus.id','=','order_items.sku_id')
-        ->join('hinbans','hinbans.id','=','skus.hinban_id')
-        ->where('orders.status',1)
-        ->selectRaw('orders.shop_id ,skus.hinban_id,skus.col_id,skus.size_id,hinbans.m_price,FLOOR(hinbans.m_price * shops.rate /1000) as gedai,order_items.pcs')
-        ->distinct()
-        // ->groupBy('my_karts.maker_id')
-        // ->orderBy('order_items.sku_id')
-        ->get();
+        ->where('orders.order_status',1)
+        ->groupBy('skus.hinban_id')
+        ->select('skus.hinban_id');
+        // ->get();
 
-        // dd($request->order,$orders[0]);
+        // dd($dl_order);
+
+        $order_sku = DB::table('orders')
+        ->join('order_items','order_items.order_id','=','orders.id')
+        ->where('orders.order_status',1)
+        ->groupBy('order_items.sku_id','orders.vendor_id','order_items.expected_price')
+        ->selectRaw('order_items.sku_id,orders.vendor_id,order_items.expected_price,sum(order_items.order_pcs) as pcs');
+        // ->get();
+
+        // dd($order_sku);
+
+        $orders = DB::table('skus')
+        ->join('hinbans','hinbans.id','=','skus.hinban_id')
+        ->joinsub($dl_order, 'dl_order', function ($join) {
+            $join->on('dl_order.hinban_id', '=', 'skus.hinban_id');
+        })
+        ->leftjoinSub($order_sku, 'orders', 'orders.sku_id', '=', 'skus.id')
+        ->join('brands','brands.id','=','hinbans.brand_id')
+        ->join('units','units.id','=','hinbans.unit_id')
+        ->join('faces','faces.face_code','=','hinbans.face_code')
+        // ->where('orders.id',$request->id2)
+        ->selectRaw('
+            skus.id,
+            orders.vendor_id as factory,
+            orders.vendor_id  as vendor,
+            "" as kijihinban,
+            hinbans.prod_code as kijimei,
+            skus.hinban_id,hinbans.hinban_name,
+            "" as tenkaibi,
+            units.season_name,
+            hinbans.year_code,
+            hinbans.shohin_gun,
+            hinbans.kizoku_g,
+            hinbans.unit_id,
+            hinbans.face_code,
+            "" as face2,
+            faces.face_item,
+            "" as nouki,
+            orders.pcs ,
+            skus.col_id,
+            skus.size_id,
+            orders.expected_price as cost ,
+            "" as jodai,"" as shiharai,
+            brands.brand_name,
+            hinbans.mix_rate,
+            skus.length,
+            skus.width,
+            hinbans.seireki_unit,
+            hinbans.kyotu_hinban,
+            "" as hachuubi,
+            "9" as desiginer ')
+            ->orderBy('skus.id')
+            ->distinct()
+            // ->groupBy('my_karts.maker_id')
+            // ->orderBy('order_items.sku_id')
+            ->get();
+
+        // dd($orders);
         $csvHeader = [
-            'shop_id' ,'hinban_id','col_id','size_id','m_price','gedai','pcs'];
+            'sku_id',
+            'factory' ,'vendor','kiji-hinban','kiji-name',
+            'hinban','hinnmei','tenkaibi','season',
+            'year','shohin-gun','kizoku','ACT','FACE1','FACE2',
+            'item','nouki','pcs','col','SZ',
+            'cost','jodai','shiharai','brand','mix_rate',
+            'length','width','seireki_-unit','kyotu-hinban','hachubi','designer',
+            // 'sku_id'
+        ];
 
         $csvData = $orders->toArray();
 
@@ -150,15 +279,41 @@ class DataDownloadController extends Controller
             fclose($handle);
         });
 
+        $timestamp = date('ymd_His');
+
         $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment; filename="orders.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="発注Data_' . $timestamp . '.csv"');
 
         // Status変更
-        $orders=Order::where('status',1)->get();
+
+        $orders=Order::where('order_status',1)
+        ->get();
+        // dd($orders);
         foreach ($orders as $order) {
-            $order->status = 3;
+            $order->order_status = 5;
             $order->save();
         }
+
+
+        // Status変更Mail
+
+        // $users = Order::Where('orders.id',$request->id2)
+        // ->join('users','users.id','orders.user_id')
+        // ->where('mailService','=',1)
+        // ->select('orders.user_id','users.name','users.email')
+        // ->get()
+        // ->toArray();
+
+        // $order_info = Order::Where('orders.id',$request->id2)
+        // ->join('shops','shops.id','orders.shop_id')
+        // ->join('users','users.id','orders.user_id')
+        // ->select('orders.id as order_id','users.name','users.email','orders.shop_id','shops.shop_name')
+        // ->first()
+        // ->toArray();
+
+        // foreach($users as $user){
+        //     SendOrderResponseMail::dispatch($order_info,$user);
+        // }
 
         return $response;
     }
@@ -173,7 +328,7 @@ class DataDownloadController extends Controller
         ->join('hinbans','hinbans.id','=','skus.hinban_id')
         ->where('orders.status',1)
         ->where('shops.company_id',400)
-        ->selectRaw('orders.shop_id ,skus.hinban_id,skus.col_id,skus.size_id,hinbans.m_price,FLOOR(hinbans.m_price * shops.rate /1000) as gedai,order_items.pcs')
+        ->selectRaw('orders.shop_id ,skus.hinban_id,skus.col_id,skus.size_id,order_items.expected_price,FLOOR(order_items.expected_price * shops.rate /1000) as gedai,order_items.pcs')
         ->distinct()
         // ->groupBy('my_karts.maker_id')
         // ->orderBy('order_items.sku_id')

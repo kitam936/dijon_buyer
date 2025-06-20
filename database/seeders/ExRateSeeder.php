@@ -15,8 +15,8 @@ class ExRateSeeder extends Seeder
     {
         DB::table('ex_rates')->insert([[
             'id' => 1,
-            'ex_rate' => 100,
-            'ex_memo' => 'YEN',
+            'ex_rate' => 2000,
+            'ex_memo' => '元',
         ],
     ]);
     }

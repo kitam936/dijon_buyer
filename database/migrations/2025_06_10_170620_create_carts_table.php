@@ -16,7 +16,6 @@ return new class extends Migration
             $table->integer('user_id');
             $table->bigInteger('sku_id');
             $table->integer('local_cur_price');
-            $table->integer('local_yen_price');
             $table->integer('pcs');
             $table->timestamps();
         });
